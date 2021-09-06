@@ -97,13 +97,22 @@
 
 <script>
 
-
+ 
 	imgInp.onchange = evt => {
 	  const [file] = imgInp.files
 	  if (file) {
 	    blah.src = URL.createObjectURL(file)
 	  }
-	} 
+	}  
+	
+	
+	/* $('#imgInp').on('change',function(e){
+		var file = $(this)[0].files;
+		
+		if(file){
+			$('#blah').attr('src',URL.createObjectURL(e.target.files[0]));
+		}
+	}); */
 
 	
 	

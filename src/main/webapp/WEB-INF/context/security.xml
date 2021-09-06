@@ -11,6 +11,7 @@
     
     	<intercept-url pattern="/quan-tri/trangchu" access="hasAnyRole('ADMIN')" />
     	<intercept-url pattern="/quan-tri/danh-muc/danh-sach" access="hasAnyRole('ADMIN')" />
+    	<intercept-url pattern="/quan-tri/san-pham/them-hoac-sua" access="hasAnyRole('ADMIN')" />
     	
     	<access-denied-handler error-page="/accessDenied" />
         <form-login  login-page="/dang-nhap"

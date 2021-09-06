@@ -195,9 +195,11 @@
 
 						<ul class="pagination" id="pagination"></ul>
 						
+						<div id="DanhmucMa">
+							<input type="hidden" value="${model.cateCode}" id="cateCode" name="danh-muc" />
+						</div>
 						
-						
-						 <input type="hidden" value="${model.cateCode}" id="cateCode" name="danh-muc" />
+						 
 						<input type="hidden" value="${model.page}" id="page" name="page" /> 
 						<input type="hidden" value="${model.limit}" id="limit" name="limit" />
 						
@@ -789,7 +791,10 @@ $('select').on('change', function() {
 	window.addEventListener('load', (event) => {
 		 ///casch 2 : set value cho cac select = du lieu tra ve ben controller 
 		 $('select[name=limit]').val(${model.limit});
+		if($('#cateCode').val() == ''){
+			$('#DanhmucMa').html('');
 			
+		}
 	
 		//getSessionLimit();
 	});

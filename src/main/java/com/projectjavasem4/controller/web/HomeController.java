@@ -115,6 +115,8 @@ public class HomeController {
 				ProductDTO p = new ModelMapper().map(item, ProductDTO.class);
 				models.add(p);
 			}
+			//mav.addObject("catecode",cateCode);
+			
 			model.setListResult(models);
 			model.setTotalItem(ProRep.findByIds(cateId).size());
 		}
@@ -122,11 +124,10 @@ public class HomeController {
 		model.setTotalPage((int) Math.ceil((double) model.getTotalItem() / model.getLimit()));
 
 		
-		if (isLogin != null) {
-			mav.addObject("isLogin", isLogin);
-		} else {
-			mav.addObject("isLogin", "false");
-		}
+		/*
+		 * if (isLogin != null) { mav.addObject("isLogin", isLogin); } else {
+		 * mav.addObject("isLogin", "false"); }
+		 */
 		return mav.addObject("model", model);
 	}
 

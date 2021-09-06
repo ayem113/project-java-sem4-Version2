@@ -47,7 +47,7 @@ public class HomeController {
 	
 	
 	
-	public ModelAndView showList(@RequestParam("page") int page, @RequestParam("limit") int limit,HttpServletRequest request) {
+	public ModelAndView showList(@RequestParam(name="page", required = false) int page, @RequestParam("limit") int limit,HttpServletRequest request) {
 		ProductDTO model = new ProductDTO();
 		model.setPage(page);
 		model.setLimit(limit);
