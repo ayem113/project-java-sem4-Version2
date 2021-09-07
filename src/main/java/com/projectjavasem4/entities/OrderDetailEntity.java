@@ -16,10 +16,10 @@ import lombok.Data;
 public class OrderDetailEntity extends BaseEntity{
 
 	@Column(name = "quantity")
-	private String quantity;
+	private Integer quantity;
 	
 	@Column(name = "price")
-	private Float price;
+	private Double price;
 	
 	@Column(name = "sale")
 	private Byte sale;

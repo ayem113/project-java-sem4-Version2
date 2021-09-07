@@ -11,7 +11,8 @@ import org.springframework.web.context.annotation.SessionScope;
 import com.projectjavasem4.entities.ProductEntity;
 import com.projectjavasem4.repository.ProductRepository;
 
-@SessionScope // name= scopedTarget.cartService
+@SessionScope  
+// name= scopedTarget.cartService
 @Service
 public class CartService {
 

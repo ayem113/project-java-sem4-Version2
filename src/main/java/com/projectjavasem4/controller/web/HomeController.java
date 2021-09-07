@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -36,13 +37,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.projectjavasem4.dto.OrderDTO;
+import com.projectjavasem4.dto.OrderDetaiDTO;
 import com.projectjavasem4.dto.ProductDTO;
+import com.projectjavasem4.dto.UsertDTO2;
 import com.projectjavasem4.entities.CategoryEntity;
+import com.projectjavasem4.entities.OrderDetailEntity;
+import com.projectjavasem4.entities.OrderEntity;
 import com.projectjavasem4.entities.ProductEntity;
 import com.projectjavasem4.entities.UserEntity;
 import com.projectjavasem4.repository.CategoryRepository;
+import com.projectjavasem4.repository.OrderDetailRepository;
+import com.projectjavasem4.repository.OrderRepository;
 import com.projectjavasem4.repository.ProductRepository;
+import com.projectjavasem4.service.CartService;
 import com.projectjavasem4.service.ICategoryService;
+import com.projectjavasem4.service.IOrderDetailService;
+import com.projectjavasem4.service.IOrderService;
 import com.projectjavasem4.service.IProductService;
 import com.projectjavasem4.service.IRoleService;
 import com.projectjavasem4.service.IUserService2;
@@ -71,9 +82,19 @@ public class HomeController {
 	
 	@Autowired
 	CategoryRepository CateRep;
+	@Autowired
+	IOrderService iOrderSer;
+	@Autowired
+	IOrderDetailService iOrderDetailSer;
 	
 	@Autowired
 	ProductRepository ProRep;
+	@Autowired
+	CartService cartService;
+	@Autowired
+	OrderRepository orderRep;
+	@Autowired
+	OrderDetailRepository orderDetailRep;
 	public boolean isLogin() {
         
 		return SecurityUtils.getPermission().size() > 1;
@@ -143,10 +164,10 @@ public class HomeController {
 		// String role=SecurityUtils.getPrincipal().getFullName();
 		// String role2=SecurityUtils.getPrincipal().getRole();
 
-		if (isLogin2()) {
-			return new ModelAndView("redirect:/trang-chu?isLogin=true");
-		}
-
+		/*
+		 * if (isLogin2()) { return new
+		 * ModelAndView("redirect:/trang-chu?isLogin=true"); }
+		 */
 		/*
 		 * Authentication authentication =
 		 * SecurityContextHolder.getContext().getAuthentication(); if (
@@ -190,11 +211,7 @@ public class HomeController {
 
 	}
 
-	@RequestMapping(value = "/thanh-toan", method = RequestMethod.GET)
-	public ModelAndView payment2(HttpServletRequest request, HttpServletResponse response) {
-
-		return new ModelAndView("web/checkout");
-	}
+	
 	@RequestMapping(value = "/test-capcha", method = RequestMethod.GET)
 	public ModelAndView tesstCapcha(Model model,HttpServletRequest request, HttpServletResponse response) {
 		UserEntity login= new UserEntity();
@@ -376,5 +393,56 @@ public class HomeController {
 		mav.addObject("productDetail", productDetail);
 		return mav;
 	}
+	
+	
+	
+	@RequestMapping(value = "/thanh-toan", method = RequestMethod.GET)
+	public ModelAndView payment2(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav =new ModelAndView("web/checkout");
+		mav.addObject("model", new OrderDTO());
+		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
+	public String checkout(HttpServletRequest request ,  @ModelAttribute("model")  OrderDTO order,HttpSession session) {
+
+		
+		@SuppressWarnings("unused")
+		Object cart = session.getAttribute("scopedTarget.cartService");
+		Collection<ProductEntity> cart1 = cartService.getAll();
+		
+		try {
+			if (iOrderSer.add(order)) {
+				
+				//Long lastInsertId = orderRep.getLastInsertId();
+				
+				OrderEntity lastInsertId2 = orderRep.getLastInsertId2();
+				
+				Long id = lastInsertId2.getId();
+				for ( ProductEntity pro :  cart1) {
+					
+					OrderDetaiDTO o = new OrderDetaiDTO();
+					
+					o.setId_order(id);
+					o.setId_product(pro.getId());
+					o.setPrice(pro.getPrice());
+					o.setQuantity(pro.getQuantity());
+					//o.setSale(pro.getSale());
+	
+					iOrderDetailSer.add(o);
+				}
+				
+				return "thanh toan thanh cong";
+				
+			}
+		} catch (Exception e) {
+			return "thanh toan khong thanh cong";
+		}
+		return null;
+		
+	}
+	
+	
 
 }

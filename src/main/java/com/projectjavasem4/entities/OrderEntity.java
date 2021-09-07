@@ -21,6 +21,9 @@ public class OrderEntity extends BaseEntity{
 	@Column(name = "address", columnDefinition = "TEXT")
 	private String address;
 	
+	@Column(name = "name", columnDefinition = "TEXT")
+	private String name;
+	
 	@Column(name = "sdt")
 	private String sdt;
 	
@@ -31,7 +34,7 @@ public class OrderEntity extends BaseEntity{
 	private Byte sale;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_user",nullable=false)
+	@JoinColumn(name = "id_user")
 	private UserEntity user;
 	
 	

@@ -1,6 +1,9 @@
 <%@include file="/common/taglib.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+	
+	<c:url var="checkout" value="/checkout"/>
 <div class="banner-wrapper has_background">
     
     <div class="banner-wrapper-inner">
@@ -40,6 +43,7 @@
                             </div>
                         </div>
                         
+                        <form:form id="formSubmit" role="form" action="/checkout" modelAttribute="model"    >
                             <div class="col2-set" id="customer_details">
                                 <div class="col-1">
                                     <div class="furgan-billing-fields">
@@ -48,24 +52,22 @@
                                             <p class="form-row form-row-first validate-required"
                                                id="billing_first_name_field" data-priority="10"><label
                                                     for="billing_first_name" class="">Tên&nbsp;<abbr
-                                                    class="required" title="required">*</abbr></label><span
-                                                    class="furgan-input-wrapper"><input type="text"
-                                                                                             class="input-text "
-                                                                                             name="billing_first_name"
-                                                                                             id="billing_first_name"
-                                                                                             placeholder="" value=""
-                                                                                             autocomplete="given-name"></span>
+                                                    class="required" title="required">*</abbr></label>
+                                                    <span
+                                                    class="furgan-input-wrapper">
+                                                    
+                                                    <form:input path="name" type="text"   class="form-control"   placeholder="Tên"  />
+                                                                                             
+                                                  </span>
                                             </p>
                                             <p class="form-row form-row-last validate-required"
                                                id="billing_last_name_field" data-priority="20"><label
                                                     for="billing_last_name" class="">SDT&nbsp;<abbr
-                                                    class="required" title="required">*</abbr></label><span
-                                                    class="furgan-input-wrapper"><input type="number"
-                                                                                             class="input-text "
-                                                                                             name="billing_last_name"
-                                                                                             id="billing_last_name"
-                                                                                             placeholder="" value=""
-                                                                                             autocomplete="family-name"></span>
+                                                    class="required" title="required">*</abbr></label>
+                                                    <span
+                                                    class="furgan-input-wrapper">
+                                                    <form:input path="sdt" type="number"   class="form-control"   placeholder="sdt"  />
+                                                    </span>
                                             </p>
                                             <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
                                                id="billing_country_field" data-priority="40"><label
@@ -132,12 +134,10 @@
                                                id="billing_phone_field" data-priority="100"><label for="billing_phone"
                                                                                                    class="">Địa chỉ cụ thể&nbsp;<abbr
                                                     class="required" title="required">*</abbr></label><span
-                                                    class="furgan-input-wrapper"><input type="tel"
-                                                                                             class="input-text "
-                                                                                             name="billing_phone"
-                                                                                             id="billing_phone"
-                                                                                             placeholder="" value=""
-                                                                                             autocomplete="tel"></span>
+                                                    class="furgan-input-wrapper">
+                                                    
+                                                   <form:input path="address" type="text"   class="form-control"   placeholder="địa chỉ"  />
+                                                   </span>
                                             </p>
                                             <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
                                                id="billing_country_field" data-priority="40"><label
@@ -162,8 +162,11 @@
                                     </div>
                                     
                                 </div>
-                                
+                                <button type="submit" id="btnCheckout" class="btn btn-info btn-fill pull-right">Thanh toán</button>
                             </div>
+                            
+                            
+                        </form:form>
                             <h3 id="order_review_heading">Sản phẩm</h3>
                             <div id="order_review" class="furgan-checkout-review-order">
                                 <table class="shop_table furgan-checkout-review-order-table">
@@ -239,9 +242,63 @@
     
 <script type="text/javascript">
 
-$(".btnChekout").click(function (e){
+$('#formSubmit').submit(function (e) {
+	e.preventDefault(); //huy bo su kien mac dinh cua trang 
+
+	console.log(new FormData(this));
+    $.ajax({
+        url: '${checkout}',
+        type: 'POST',
+        dataType: "text",
+        data: new FormData(this),
+        processData: false,
+        
+        success: function (result) {
+        
+        	Swalalert(result,"success");
+        
+        },
+        error: function (result) {
+        	
+         	Swalalert(result,"error");
+        }
+    });
+});
+
+/* $(".btnChekout").click(function (e){
 	
-	alert("ok");
-}    );
+	FormData form = new FormData("#formSubmit");
+	console.log(form);
+	
+	e.preventDefault(); //huy bo su kien mac dinh cua trang 
+    $.ajax({
+        url: '${checkout}',
+        type: 'POST',
+        dataType: "JSON",
+        //enctype: 'multipart/form-data',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (result) {
+        	Swalalert(result,"success");
+        },
+        error: function (error) {
+        	Swalalert(result,"error");
+        }
+    }); 
+});*/
     
+    
+    
+function Swalalert(mess,icon) {
+		Swal.fire({
+			  position: 'top',
+			  icon: icon,
+			  title: mess,
+			  showConfirmButton: false,
+			  timer: 1500
+			});
+			
+		
+	};
 </script>
