@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -12,17 +13,24 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,12 +39,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.projectjavasem4.constant.MyConstants;
 import com.projectjavasem4.dto.OrderDTO;
 import com.projectjavasem4.dto.OrderDetaiDTO;
 import com.projectjavasem4.dto.ProductDTO;
@@ -50,8 +60,10 @@ import com.projectjavasem4.repository.CategoryRepository;
 import com.projectjavasem4.repository.OrderDetailRepository;
 import com.projectjavasem4.repository.OrderRepository;
 import com.projectjavasem4.repository.ProductRepository;
+import com.projectjavasem4.repository.UserRepository;
 import com.projectjavasem4.service.CartService;
 import com.projectjavasem4.service.ICategoryService;
+import com.projectjavasem4.service.IMailService;
 import com.projectjavasem4.service.IOrderDetailService;
 import com.projectjavasem4.service.IOrderService;
 import com.projectjavasem4.service.IProductService;
@@ -86,7 +98,8 @@ public class HomeController {
 	IOrderService iOrderSer;
 	@Autowired
 	IOrderDetailService iOrderDetailSer;
-	
+	@Autowired
+	IMailService iMailSer;
 	@Autowired
 	ProductRepository ProRep;
 	@Autowired
@@ -95,6 +108,16 @@ public class HomeController {
 	OrderRepository orderRep;
 	@Autowired
 	OrderDetailRepository orderDetailRep;
+	
+	@Autowired
+	UserRepository userRep;
+	
+	 @Autowired
+	    public JavaMailSender emailSender;
+	 
+
+	 
+	 
 	public boolean isLogin() {
         
 		return SecurityUtils.getPermission().size() > 1;
@@ -177,7 +200,7 @@ public class HomeController {
 		 * 
 		 * return new ModelAndView("redirect:/trang-chu?isLogin=true"); }
 		 */
-
+		mav.addObject("model", new UsertDTO2());
 		return mav;
 
 	}
@@ -403,6 +426,116 @@ public class HomeController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value = "/quen-mat-khau", method = RequestMethod.GET)
+	public ModelAndView forgetPass(HttpServletRequest request, HttpServletResponse response) {
+		 return new ModelAndView("web/forgetPass");		 
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/sendMailResetPass/*", method = RequestMethod.GET)
+	public String sendMailResetPass( HttpServletRequest request, HttpServletResponse response) {//@PathVariable String email,
+		
+		String requestURI = request.getServletPath();
+		String emailAddress = requestURI.substring(19);
+		
+		String codeRamdom=RandomStringUtils.randomNumeric(6);
+		
+		if (iMailSer.sendMailResetPass(emailAddress, codeRamdom)) {
+			
+			/*c1
+			 * Long idUser = userRep.findOneByEmail(emailAddress).getId();
+			 * userRep.updateCodeCheckPass(codeRamdom, idUser);
+			 */
+			//c2
+			UserEntity u = userRep.findOneByEmail(emailAddress);
+			u.setCodeCheckPass(codeRamdom);
+			userRep.save(u);
+			
+			return "true";
+			//return "Da gui mail. vui long kiem tra email cua ban";
+		}else {
+				return"false";
+			//return "gui mail loi";
+
+	
+		}
+		
+		
+	}
+	
+	
+	
+	//c1 dung phuowgn thuc get và sử lý url (cách củ chuối)
+	@ResponseBody
+	@RequestMapping(value = "/checkCodeResetPass/*", method = RequestMethod.GET)
+	public String checkCodeResetPass( HttpServletRequest request, HttpServletResponse response) {//@PathVariable String email,
+		
+		String requestURI = request.getServletPath();
+		String url = requestURI.substring(20);
+		String code=url.substring(0,6);
+				
+				int index=url.indexOf("&");
+				String email=url.substring(index+1);
+		
+				UserEntity user = userRep.findOneByEmail(email);
+				return(user.getCodeCheckPass().equals(code)) ?"xac thuc thanh cong":"sai ma code!";
+				
+				
+				/*
+				 * UserEntity check = userRep.checkCodeResetPass(code, email);
+				 * return(check!=null) ?"xac thuc thanh cong":"sai ma code!";
+				 */
+		
+		
+	}
+	
+	//c2 dùng phương thức post (aajax truyền biến lên controller nhận về )
+	@ResponseBody
+	@RequestMapping(value = "/checkCodeResetPass2", method = RequestMethod.POST)
+	public String checkCodeResetPass( @RequestParam String email, @RequestParam String code) {
+
+		UserEntity user = userRep.findOneByEmail(email);
+		return(user.getCodeCheckPass().equals(code)) ?"true":"false";
+	
+	}
+	
+	@RequestMapping(value = "/dmk", method = RequestMethod.GET)
+	public ModelAndView dmk(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav =new ModelAndView("web/dmk");
+		mav.addObject("model", new UsertDTO2());
+		return mav;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/changePass", method = RequestMethod.POST)
+	public String changePass(@ModelAttribute("model")  UsertDTO2 user  ) {//@PathVariable String email,
+		
+		String email=user.getEmail();
+	
+		
+		try {
+			UserEntity u = userRep.findOneByEmail(email);
+			//u.setPassword(user.getPassword());
+			u.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+			userRep.save(u);
+			
+			
+			
+			return"doi mat khau thanh cong";
+		} catch (Exception e) {
+			return"doi mat khau khong thanh cong";
+		}
+		
+		
+		
+		
+	}
+	
+	
 	@ResponseBody
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String checkout(HttpServletRequest request ,  @ModelAttribute("model")  OrderDTO order,HttpSession session) {
@@ -444,5 +577,96 @@ public class HomeController {
 	}
 	
 	
-
+	@ResponseBody
+    @RequestMapping("/sendSimpleEmail")
+    public String sendSimpleEmail() {
+ 
+        // Create a Simple MailMessage.
+        SimpleMailMessage message = new SimpleMailMessage();
+         
+        message.setTo(MyConstants.FRIEND_EMAIL);
+        message.setSubject("Test Simple Email");
+        message.setText("Hello, Im testing Simple Email");
+ 
+        // Send Message!
+        this.emailSender.send(message);
+ 
+        return "Email Sent!";
+    }
+	
+	@ResponseBody
+    @RequestMapping("/sendAttachmentEmail")
+    public String sendAttachmentEmail() throws MessagingException {
+ 
+        MimeMessage message = emailSender.createMimeMessage();
+ 
+        boolean multipart = true;
+ 
+        MimeMessageHelper helper = new MimeMessageHelper(message, multipart);
+ 
+        helper.setTo(MyConstants.FRIEND_EMAIL);
+        helper.setSubject("Test email with attachments");
+         
+        helper.setText("Hello, Im testing email with attachments!");
+         
+        String path1 = "D:\\Downloads\\JD-TECH-SUPPORT.docx";
+        String path2 = "D:\\Downloads\\file_download_20210906204210.xlsx";
+ 
+        // Attachment 1
+        FileSystemResource file1 = new FileSystemResource(new File(path1));
+        helper.addAttachment("Txt file", file1);
+ 
+        // Attachment 2
+        FileSystemResource file2 = new FileSystemResource(new File(path2));
+        helper.addAttachment("Readme", file2);
+ 
+        emailSender.send(message);
+ 
+        return "Email Sent!";
+    }
+	
+	 @ResponseBody
+	    @RequestMapping("/sendHtmlEmail")
+	    public String sendHtmlEmail() throws MessagingException {
+	 
+	        MimeMessage message = emailSender.createMimeMessage();
+	 
+	        boolean multipart = true;
+	         
+	        MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
+	         
+	        String htmlMsg = "<h3>Im testing send a HTML email</h3>"
+	                +"<img src='http://www.apache.org/images/asf_logo_wide.gif'>";
+	         
+	        message.setContent(htmlMsg, "text/html");
+	         
+	        helper.setTo(MyConstants.FRIEND_EMAIL);
+	         
+	        helper.setSubject("Test send HTML email");
+	         
+	     
+	        this.emailSender.send(message);
+	 
+	        return "Email Sent!";
+	    }
+	 
+	 @ResponseBody
+	 @RequestMapping( "/sendEmail.do")
+	    public String doSendEmail() {
+	        // takes input from e-mail form
+	   
+	         
+	        // creates a simple e-mail object
+	        SimpleMailMessage email = new SimpleMailMessage();
+	        email.setTo("vohuyhieu.qb@gmail.com");
+	        email.setSubject("hehe");
+	        email.setText("gui mail bang been config ");
+	         
+	        // sends the e-mail
+	        emailSender.send(email);
+	         
+	        // forwards to the view named "Result"
+	        return "Result";
+	    }
+	 
 }
