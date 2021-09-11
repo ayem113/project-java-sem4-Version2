@@ -3,16 +3,16 @@ package com.projectjavasem4.service;
 import java.util.List;
 
 import com.projectjavasem4.entities.UserEntity;
-import com.projectjavasem4.dto.UsertDTO2;
+import com.projectjavasem4.dto.UserDTO;
 
 
-public interface IUserService2 {
-	List<UsertDTO2> getAll();
+public interface IUserService {
+	List<UserDTO> getAll();
 	int getTotalItem();
-	UsertDTO2 findById(long id);
+	UserDTO findById(long id);
 	boolean save(UserEntity e);
 	void delete(long[] ids);
 	void deleteById(long id);
-	
+	void clearOTP(UserEntity u); 
 	
 }

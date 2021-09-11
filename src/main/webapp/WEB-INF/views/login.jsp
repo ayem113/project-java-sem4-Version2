@@ -20,8 +20,7 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Chào mừng quay trở l!!</h1>
                                     </div>
-                                    
-                                    
+                                
 						               <c:if test="${param.incorrectAccount != null}">
 											<div class="alert alert-danger">	
 													Sai tên đăng nhập hoặc mật khẩu 
@@ -50,7 +49,7 @@
                                         	<div class="row">
                                         	<div class="col-md-6">
                                         	<div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <input type="checkbox" name="remember-me" class="custom-control-input" id="customCheck">
                                                 <label class="custom-control-label" for="customCheck">nhớ tài khoản</label>
                                             </div>
                                         	
@@ -106,7 +105,7 @@
         <div class="col-md-9">
         	
         <form:input path="email" type="email"  id="emailAddress" class="form-control"   placeholder="Nhập email của bạn"  />
-        
+        <h5 id="result"></h5>
         </div>
         <div class="col-md-3">
         	<button  style=" width: 100%;"  type="button" class="btnSendMail btn btn-info">Gửi mã</button>
@@ -117,7 +116,7 @@
         <br>
         <div class="row">
         <div class="col-md-9">
-        	<form:input path="codeCheckPass" class="form-control" style="width: 100%; height: 40px;"  id="verifyCode" type="text" placeholder="Nhập mã xác minh bạn nhận được"/> 
+        	<form:input path="otp" class="form-control" style="width: 100%; height: 40px;"  id="verifyCode" type="text" placeholder="Nhập mã xác minh bạn nhận được"/> 
         </div>
         <div class="col-md-3">
         	<button style=" width: 100%;" type="submit" class="btnVerifyCode btn btn-info">Xác thực</button>
@@ -167,20 +166,59 @@ $("a.btnForget").bind('click', function (e) {
 });
 
 
+	function emailCheck(email) {
+	  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	  return re.test(email);
+	}
+		
+	/* function phoneCheck(str) {
+		  return /^(84|0[3|5|7|8|9])+([0-9]{8})$/.test(str);
+		 
+		}
+	
+	function validate() {
+		  const $result = $("#result");
+		  const email = $("#emailAddress").val();
+		  $result.text("");
 
+		  if (phoneCheck(email)) {
+		    $result.text( " is valid :)");
+		    $result.css("color", "green");
+		  } else {
+		    $result.text(" is not valid :(");
+		    $result.css("color", "red");
+		  }
+		  return false;
+		}
+	
+	$("#emailAddress").on("input", validate); */
 
  $('.btnSendMail').click(function (e) { 
-	e.preventDefault(); 
-	var email=$("#emailAddress").val();
-	$.get('/sendMailResetPass/'+email, function(result){  
-		if (result=="true") {
-			Swalalert("Đã gửi mail. Vui lòng kiểm tra email của bạn!","success")
-		}else
-		{
-			Swalalert("Gửi mail lỗi !","error")
-			
-		};
-	 });
+	 e.preventDefault(); 
+	 
+	 const $result = $("#result");
+	  const email = $("#emailAddress").val();
+	  
+	if (emailCheck(email)) {
+		$.get('/sendMailResetPass/'+email, function(result){  
+			if (result=="true") {
+				Swalalert("Đã gửi mail. Vui lòng kiểm tra email của bạn!","success");
+				$result.text("");
+			}else
+			{
+				Swalalert("Gửi mail lỗi !","error")
+				
+			};
+		 });
+	} else  {
+		$result.text( " vui lòng nhập email đúng định dạng !");
+	    $result.css("color", "red");
+	}
+	 
+	 
+	
+	
+	
 }); 
 
 
@@ -209,10 +247,16 @@ $('.btnVerifyCode').click(function (e) {
     	email : email,
     	code : code
     }, function(data) {
+
+    	if (data=="expires") {
+			Swalalert("Mã đã hết hạn","warning");
+		}else
     	if (data=="true") {
 			Swalalert("Xác thực thành công","success");
 			$('.btnChangePass').css({ display: 'block'	});	
 			$("#changePass").prop("type", "text");
+			$('.btnVerifyCode').css({ display: 'none'	});	
+			$("#verifyCode").prop("type", "hidden");
 			
 		}else
 		{
@@ -231,7 +275,6 @@ $('.btnVerifyCode').click(function (e) {
 $('#formSubmit').submit(function (e) {
 	e.preventDefault(); //huy bo su kien mac dinh cua trang 
 
-	console.log(new FormData(this));
 	   $.ajax({
            url: '${ProAPI}',
            type: 'POST',
@@ -240,13 +283,21 @@ $('#formSubmit').submit(function (e) {
            data: new FormData(this),
            processData: false,
            contentType: false,
-           success: function (result) {
-           	Swalalert(result,"success");
-           	console.log(result);
+           success: function (data) {
+        	   if (data=="true") {
+       			Swalalert("Đổi mật khẩu thành công","success");
+       			$('.btnChangePass').css({ display: 'block'	});	
+       			$("#changePass").prop("type", "text");
+       			$('#emailModal').modal("hide");
+       			$('#emailModal').find('form')[0].reset();
+       		}else
+       		{
+       			Swalalert("Đổi mật khẩu không thành công!","error")
+       			
+       		};
            },
            error: function (error) {
         		console.log(error);
-           	Swalalert(error,"error");
            }
        });
 }); 

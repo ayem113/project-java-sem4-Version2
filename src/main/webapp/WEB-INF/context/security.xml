@@ -22,6 +22,9 @@
                      authentication-failure-url="/dang-nhap?incorrectAccount"/>
         <session-management invalid-session-url="/dang-nhap?sessionTimeout"/>
         <logout delete-cookies="JSESSIONID"/>
+        <!-- <remember-me key="uniqueAndSecret"/> -->
+        <!-- <remember-me key="uniqueAndSecret" token-validity-seconds="86400"/> -->
+        
     </http>
     
     <authentication-manager >

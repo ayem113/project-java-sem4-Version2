@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.projectjavasem4.service.IUserService2;
+import com.projectjavasem4.service.IUserService;
 
 @Controller(value = "UserControllerOfAdmin")
 public class UserController {
 	@Autowired
-	private IUserService2 newService;
+	private IUserService newService;
 	
 	@RequestMapping(value = "/quan-tri/nguoi-dung/danh-sach", method = RequestMethod.GET)
 	public ModelAndView list() {

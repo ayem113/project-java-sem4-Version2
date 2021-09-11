@@ -207,7 +207,7 @@
 										<p class="furgan-mini-cart__buttons buttons">
 											<a href="/gio-hang/danh-sach" class="button furgan-forward">Xem giỏ hàng</a>
 											<a href="<c:url value="/thanh-toan"/>"
-												class="button checkout furgan-forward">Checkout</a>
+												class="button checkout furgan-forward">Thanh toán</a>
 										</p>
 									</div>
 								</div>

@@ -3,7 +3,7 @@ package com.projectjavasem4.dto;
 import lombok.Data;
 
 @Data
-public class UsertDTO2 extends AbstractDTO<UsertDTO2> {
+public class UserDTO extends AbstractDTO<UserDTO> {
 
 	private String username;
 
@@ -14,12 +14,16 @@ public class UsertDTO2 extends AbstractDTO<UsertDTO2> {
 	private String address;
 
 	private String img;
+	
+	private String  Payments;
+	
+	private String sdt;
 
 	private Integer stt;
 	
 	private String email;
 	
-	private String codeCheckPass;
+	private String otp;
 
 	
 

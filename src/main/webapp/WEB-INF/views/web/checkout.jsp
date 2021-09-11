@@ -1,7 +1,7 @@
 <%@include file="/common/taglib.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+	<%@ page import="com.projectjavasem4.util.SecurityUtils"%>
 	
 	<c:url var="checkout" value="/checkout"/>
 <div class="banner-wrapper has_background">
@@ -46,8 +46,12 @@
                         <form:form id="formSubmit" role="form" action="/checkout" modelAttribute="model"    >
                             <div class="col2-set" id="customer_details">
                                 <div class="col-1">
+                                    
                                     <div class="furgan-billing-fields">
+                                        '
                                         <h3>Thông tin thanh toán</h3>
+                          		
+                                        
                                         <div class="furgan-billing-fields__field-wrapper">
                                             <p class="form-row form-row-first validate-required"
                                                id="billing_first_name_field" data-priority="10"><label
@@ -56,7 +60,18 @@
                                                     <span
                                                     class="furgan-input-wrapper">
                                                     
-                                                    <form:input path="name" type="text"   class="form-control"   placeholder="Tên"  />
+                                                   
+                                                    
+                                                  <% if(SecurityUtils.getPermission().size()>1 ){ %>
+																<form:input path="name" type="text"   value="<%=SecurityUtils.getPrincipal().getFullName()%>" class="form-control"     />
+													<% }
+													else{ %>
+																<form:input path="name" type="text"   class="form-control"   placeholder="tên của bạn"  />						
+													<%} %>
+                                                    
+                                                    
+                                                    
+                                                    
                                                                                              
                                                   </span>
                                             </p>
@@ -66,7 +81,14 @@
                                                     class="required" title="required">*</abbr></label>
                                                     <span
                                                     class="furgan-input-wrapper">
-                                                    <form:input path="sdt" type="number"   class="form-control"   placeholder="sdt"  />
+                                                    
+                                                    <% if(SecurityUtils.getPermission().size()>1 ){ %>
+																<form:input path="sdt" type="number"   value="<%=SecurityUtils.getPrincipal().getSdt()%>" class="form-control"     />
+													<% }
+													else{ %>
+																<form:input path="sdt" type="number"   class="form-control"   placeholder="sdt"  />						
+													<%} %>
+                                                    
                                                     </span>
                                             </p>
                                             <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
@@ -89,9 +111,8 @@
                                                     value="ZW">Zimbabwe</option></select>
                                                 </span>
                                             </p>
-                                            <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
-                                               id="billing_country_field" data-priority="40"><label
-                                                    for="billing_country" class="">Quận/Huyện &nbsp;<abbr class="required" title="required">*</abbr></label>
+                                            <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"  id="billing_country_field" data-priority="40"><label                                                    
+                                            for="billing_country" class="">Quận/Huyện &nbsp;<abbr class="required" title="required">*</abbr></label>
                                                 <span class="furgan-input-wrapper">
                                                 <select name="billing_country"
                                                         id="billing_country"
@@ -109,8 +130,7 @@
                                                     value="ZW">Zimbabwe</option></select>
                                                 </span>
                                             </p>
-                                            
-                                            <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
+										    <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
                                                id="billing_country_field" data-priority="40"><label
                                                     for="billing_country" class="">Phường/Thị xã &nbsp;<abbr class="required" title="required">*</abbr></label>
                                                 <span class="furgan-input-wrapper">
@@ -131,17 +151,19 @@
                                                 </span>
                                             </p>
                                             <p class="form-row form-row-wide validate-required validate-phone"
-                                               id="billing_phone_field" data-priority="100"><label for="billing_phone"
-                                                                                                   class="">Địa chỉ cụ thể&nbsp;<abbr
+                                               id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Địa chỉ cụ thể&nbsp;<abbr
                                                     class="required" title="required">*</abbr></label><span
                                                     class="furgan-input-wrapper">
-                                                    
-                                                   <form:input path="address" type="text"   class="form-control"   placeholder="địa chỉ"  />
+                                                     <% if(SecurityUtils.getPermission().size()>1 ){ %>
+																<form:input path="address" type="text"   value="<%=SecurityUtils.getPrincipal().getAddress()%>" class="form-control"    />
+													<% }
+													else{ %>
+																<form:input path="address" type="text"   class="form-control"   placeholder="địa chỉ"  />				
+													<%} %>
+                                                   
                                                    </span>
                                             </p>
-                                            <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
-                                               id="billing_country_field" data-priority="40"><label
-                                                    for="billing_country" class="">HÌnh thức thanh toán &nbsp;<abbr class="required" title="required">*</abbr></label>
+                                            <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"  id="billing_country_field" data-priority="40"><label                                                    for="billing_country" class="">HÌnh thức thanh toán &nbsp;<abbr class="required" title="required">*</abbr></label>
                                                 <span class="furgan-input-wrapper">
                                                 <select name="billing_country"
                                                         id="billing_country"
@@ -150,15 +172,14 @@
                                                         tabindex="-1"
                                                         aria-hidden="true"><option
                                                     value="">Select a country…</option><option
-                                                    value="AX">Thanh toán khi nhận hàng</option><option
-                                                    value="AF">Thanh toán trực tuyến</option><option value="AL">Albania</option><option
-                                                    value="DZ">Thẻ ngân hàng</option><option
-                                                    value="AS">Chuyển kho</option><option></select>
+                                                    value="A1">Thanh toán khi nhận hàng</option><option
+                                                    value="A2">Thanh toán trực tuyến</option><option value="AL">Albania</option><option
+                                                    value="D3">Thẻ ngân hàng</option><option
+                                                    value="A4">Chuyển kho</option><option></select>
                                                 </span>
                                             </p>
-                                            
-                                            
-                                            </div>
+										
+										</div>
                                     </div>
                                     
                                 </div>
@@ -167,6 +188,12 @@
                             
                             
                         </form:form>
+                            
+                            
+                            
+                            
+                            
+                            
                             <h3 id="order_review_heading">Sản phẩm</h3>
                             <div id="order_review" class="furgan-checkout-review-order">
                                 <table class="shop_table furgan-checkout-review-order-table">
