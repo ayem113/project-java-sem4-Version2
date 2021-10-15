@@ -14,6 +14,7 @@ encoding//src/main/java/com/projectjavasem4/service/impl/MailService.java=UTF-8
 encoding//src/main/java/com/projectjavasem4/service/impl/OrderService.java=UTF-8
 encoding//src/main/java/com/projectjavasem4/service/impl/ProductService.java=UTF-8
 encoding//src/main/java/com/projectjavasem4/util/HibernateUtil.java=UTF-8
+encoding//src/main/java/com/projectjavasem4/util/UploadUtil.java=UTF-8
 encoding//src/main/webapp/WEB-INF/views/admin/home.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/admin/product/listPro.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/admin/user/listUser.jsp=UTF-8

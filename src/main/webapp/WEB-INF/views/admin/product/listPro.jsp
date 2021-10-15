@@ -1,6 +1,6 @@
 <%@include file="/common/taglib.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<c:url var="newPro" value="/quan-tri/san-pham/them-hoac-sua" />
+
 <c:url var="ProAPI" value="/api/product" />
 <style>
 table, th, td {
@@ -48,8 +48,8 @@ table, th, td {
 							            <div >
 							                <label>sl</label>  
 							                <input data-idColor="${color.id}"  data-idSize="${size.id}" name="quantity" type="number" style="width: 50px;"/>
-							                <input type="file" class="file-upload" data-idC="${color.id}" data-idS="${size.id}" multiple="multiple" name="file[]" />
-							                <input type="text" class="filenames" data-idC="${color.id}" data-idS="${size.id}" name="filename[]" />
+							                <input style="width: 125px" type="file" class="file-upload" data-idC="${color.id}" data-idS="${size.id}" multiple="multiple" name="file[]" />
+							                <input type="hidden" class="filenames" data-idC="${color.id}" data-idS="${size.id}" name="filename[]" />
 							                
 							            </div>
 							        	</form>		
@@ -181,11 +181,7 @@ table, th, td {
 	<h1 class="h3 mb-2 text-gray-800">Thêm mới</h1>
 
 	<a class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
-		data-toggle="tooltip" title='Thêm bài viết kiểu trang mới'
-		href='${newPro}'> <span> <i
-			class="fa fa-plus-circle bigger-110 purple"></i></span>
-	</a> <a class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
-		data-toggle="tooltip" title='Thêm bài viết kiểu modal' id="btnNewPro">
+		data-toggle="tooltip" title='Thêm mới sản phẩm' id="btnNewPro">
 		<span> <i class="fa fa-plus-circle bigger-110 red"></i></span>
 	</a>
 	 <a class="btn btn-danger btn-circle btn-sm"
@@ -283,7 +279,7 @@ $(document).ready(function() {
 		}
 		
 		$.ajax({
-            url: '/api/product/uploadFileTam',
+            url: '/upload/uploadFileTam',
             type: 'post',
             data: fd, 
             contentType: false,
@@ -292,6 +288,7 @@ $(document).ready(function() {
             	console.log(response);
                 if(response != null){
                 	$('input.filenames[data-idC='+idColor+'][data-idS='+idSize+']').val(response);
+                	console.log(response);
                 } else {
                 	alert('Upload không thành công');
                 }
@@ -370,6 +367,9 @@ var titlePage = $('#myModalLabel');
             	console.log(data);
             	if (data==true) {
             		Swalalert("Thêm thành công!","success");
+            		$('#addOrEditModal').modal("hide");
+            		$('#detailPro').modal("show");
+            		
 				}else{
 					Swalalert("Thêm không thành công!","error");
 				}
@@ -417,12 +417,12 @@ var titlePage = $('#myModalLabel');
 		    $.each($(item).find('input[name=quantity]'), function(index, value){
 		    	
 		    	if ($(value).val()!="") { 
-		    		console.log( $(this).parent().find('input[type=text].filenames').val());
+		    		console.log( $(this).parent().find('input[type=hidden].filenames').val());
 		    		var obj ={ 
 		    			idSize:idSize,
 		    			idColor: $(value).attr("data-idColor"),
 		    			soluong: $(value).val(),
-		    			listImgs: $(this).parent().find('input[type=text].filenames').val()
+		    			listImgs: $(this).parent().find('input[type=hidden].filenames').val()
 		    		};
 		    		proDetail.push(obj);
 				}	

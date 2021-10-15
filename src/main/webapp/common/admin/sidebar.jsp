@@ -38,6 +38,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="<c:url value='/quan-tri/san-pham/danh-sach'/>">Sản Phẩm</a>
+                        <a class="collapse-item" href="<c:url value='/quan-tri/san-pham/danh-sach'/>">Sản Phẩm chi tiết</a>
                         <a class="collapse-item" href="<c:url value='/quan-tri/nguoi-dung/danh-sach'/>">Người dùng</a>
                         <a class="collapse-item" href="<c:url value='/quan-tri/danh-muc/danh-sach'/>">Danh mục</a>
                          <a class="collapse-item" href="<c:url value='/quan-tri/danh-muc/danh-sach'/>">Đơn hàng</a>
