@@ -34,30 +34,14 @@
 
 
 
-	<!-- Captcha Servlet -->
-	<servlet>
-		<servlet-name>CaptchaServlet</servlet-name>
-		<servlet-class>com.projectjavasem4.servlet.CaptchaGenServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>CaptchaServlet</servlet-name>
-		<url-pattern>/captcha.jpg</url-pattern>
-	</servlet-mapping>
-
-	<!-- Captcha -->
-	<!-- <servlet-mapping> <servlet-name>Captcha</servlet-name> <url-pattern>/</url-pattern> 
-		</servlet-mapping> -->
-
-
-	<servlet>
+	<!-- <servlet>
 		<servlet-name>BotDetect Captcha</servlet-name>
 		<servlet-class>com.captcha.botdetect.web.servlet.CaptchaServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>BotDetect Captcha</servlet-name>
 		<url-pattern>/botdetectcaptcha</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 
 
 
@@ -107,6 +91,10 @@
 	</filter-mapping>
 
 
+  <!-- sau 20p sẽ tự động đăng xuất vì hết phiên làm việc -->
+	<session-config>
+	    <session-timeout>20</session-timeout>
+	</session-config>
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

@@ -3,63 +3,54 @@
 <%@ page import="com.projectjavasem4.util.SecurityUtils"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 
-<c:set var="cart" value="${sessionScope['scopedTarget.cartService']}"/>
+<c:set var="cart" value="${sessionScope['scopedTarget.cartService2']}"/>
 	
 
 	
-<header id="header"
-	class="header style-03 header-dark header-transparent">
+<header id="header" class="header style-03 header-dark header-transparent" >
 	<div class="header-wrap-stick">
-		<div class="header-position">
+		<div id="myHeader" class="header-position" style="padding: 0px;">
 			<div class="header-middle">
 				<div class="furgan-menu-wapper"></div>
 				<div class="header-middle-inner">
 
-					<div class="block-menu-bar">
+					<!-- <div class="block-menu-bar">
 						<a class="menu-bar menu-toggle" href="#"> <span></span> <span></span>
 							<span></span>
 						</a>
-					</div>
+					</div> -->
 				</div>
-				<div class="header-logo">
-					<a href="<c:url value='/trang-chu?page=1&limit=10'/>"><img alt="Furgan"
+				<div class="header-logo" style="margin-top: 15px;">
+					<a href="<c:url value='/trang-chu'/>"><img alt="Furgan"
 						src="<c:url value='/template/web/assets/images/logo.png '/>"
 						class="logo"></a>
 				</div>
-				<div class="header-control">
+				<div class="header-control fixme">
+					
+					<input  type="text" id="search_data" placeholder="Bạn đang tìm kiếm cái gì? (tại sao không thử Sofa, hoặc Bàn ăn)" autocomplete="off" style="width: 64%;" />
+ 				
+				
 					<div class="header-control-inner">
 						<div class="meta-dreaming">
-						
-						<div class="menu-item block-user block-dreaming furgan-dropdown">
-								<a class="" href="my-account.html"> <span
-									class=""></span> Danh muc
-								</a>
-								<ul class="sub-menu">
+								<div class="header-search furgan-dropdown">
+										<div class="header-search-inner" data-furgan="furgan-dropdown">
+											<a href="#" class="link-dropdown block-link"> <span
+												class="flaticon-magnifying-glass-1"></span>
+											</a>
+										</div>	
+								</div>
 								
-								<c:forEach var="item" items="${sessionScope.listCategory2}"> 
-								
-									<li
-										class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--dashboard is-active">
-										<a href=" <c:url value='/trang-chu?danh-muc=${item.code}&page=1&limit=10'/>"> ${item.name}</a>
-									</li>
-								</c:forEach>
-								
-								
-									
-									
-								</ul>
-								
-								
-								<%-- <c:forEach var="item" items="${sessionScope.listCategory2}">
-							      <li>${item.name}</li>
-							        <c:forEach items = "${item.category}" var="c"> 
-							            <li>${c.id}</li>
-							            <li>${c.name}</li>
-							        </c:forEach> 
-							    </c:forEach> --%>
-								
-								
-							</div>
+								<div class="menu-item block-user block-dreaming furgan-dropdown">
+									<a class="" href="my-account.html"> <span class=""></span> Danh muc </a>
+									<ul class="sub-menu">		
+									<c:forEach var="item" items="${sessionScope.listCategory2}"> 
+										<li
+											class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--dashboard is-active">
+											<a href=" <c:url value='ajax/getLstProduct?danh-muc=${item.code}&page=1&limit=10'/>"> ${item.name}</a>
+										</li>
+									</c:forEach>	
+									</ul>
+								</div>
 						
 						
 							<ul class="wpml-menu">
@@ -95,7 +86,7 @@
 								
 								<% if(SecurityUtils.getPermission().size()>1 ){ %>
 									<li class="nav-item"><a class="nav-link" href="#"> <%=SecurityUtils.getPrincipal().getFullName()%></a></li>
-									<li class="nav-item"><a class="nav-link" href="<c:url value='/thoat'/>">Thoát </a></li>
+									
 								<% }
 								else{ %>
 									<li class="nav-item"><a class="nav-link" href="<c:url value='/dang-nhap'/>">Đăng nhập </a></li>
@@ -106,47 +97,8 @@
 
 
 							</ul>
-							<div class="header-search furgan-dropdown">
-								<div class="header-search-inner" data-furgan="furgan-dropdown">
-									<a href="#" class="link-dropdown block-link"> <span
-										class="flaticon-magnifying-glass-1"></span>
-									</a>
-								</div>
-								<div class="block-search">
-									<form role="search" method="get"
-										class="form-search block-search-form furgan-live-search-form">
-										<div class="form-content search-box results-search">
-											<div class="inner">
-												<input autocomplete="off"
-													class="searchfield txt-livesearch input" name="s" value=""
-													placeholder="Search here..." type="text">
-											</div>
-										</div>
-										<input name="post_type" value="product" type="hidden">
-										<input name="taxonomy" value="product_cat" type="hidden">
-										<div class="category">
-											<select title="product_cat" name="product_cat"
-												class="category-search-option" tabindex="-1">
-												<option value="0">All Categories</option>
-												<option class="level-0" value="light">Light</option>
-												<option class="level-0" value="chair">Chair</option>
-												<option class="level-0" value="table">Table</option>
-												<option class="level-0" value="bed">Bed</option>
-												<option class="level-0" value="new-arrivals">New
-													arrivals</option>
-												<option class="level-0" value="lamp">Lamp</option>
-												<option class="level-0" value="specials">Specials</option>
-												<option class="level-0" value="sofas">Sofas</option>
-											</select>
-										</div>
-										<button type="submit" class="btn-submit">
-											<span class="flaticon-magnifying-glass-1"></span>
-										</button>
-									</form>
-									<!-- block search -->
-								</div>
-							</div>
-							<div class="furgan-dropdown-close">x</div>
+							
+							
 							<div class="menu-item block-user block-dreaming furgan-dropdown">
 								<a class="block-link" href="my-account.html"> <span
 									class="flaticon-profile"></span>
@@ -154,47 +106,36 @@
 								<ul class="sub-menu">
 									<li
 										class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--dashboard is-active">
-										<a href="#">Dashboard</a>
+										<a href="<c:url value='/tai-khoan'/>">Thông tin tài khoản</a>
 									</li>
 									<li
 										class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--orders">
-										<a href="#">Orders</a>
+										<a href="<c:url value='/don-hang'/>">Quản lý đơn hàng</a>
 									</li>
-									<li
-										class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--downloads">
-										<a href="#">Downloads</a>
-									</li>
-									<li
-										class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--edit-adchair">
-										<a href="#">Address</a>
-									</li>
-									<li
-										class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--edit-account">
-										<a href="#">Account details</a>
-									</li>
+									
 									<li
 										class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--customer-logout">
-										<a href="#">Logout</a>
+										<a href="<c:url value='/thoat'/>">Thoát</a>
 									</li>
 								</ul>
 							</div>
-							<div
-								class="block-minicart block-dreaming furgan-mini-cart furgan-dropdown">
+							<div class=" tableShopingCart block-minicart block-dreaming furgan-mini-cart ">
 								<div class="shopcart-dropdown block-cart-link"
 									data-furgan="furgan-dropdown">
 									<a class="block-link link-dropdown" href="<c:url value="/gio-hang/danh-sach"/>"> <span
-										class="flaticon-cart"></span> <span id="cart-total-items" class="count">  ${cart.totalItems}</span>
+										class="flaticon-cart"></span> <span id="cart-total-items" class="count">   ${cart.totalItems}</span>
 									</a>
 								</div>
-								<div class="widget furgan widget_shopping_cart">
-									<div class="widget_shopping_cart_content">
+								<div class=" contentTableShopingCart  widget furgan widget_shopping_cart">
+									<div class="  widget_shopping_cart_content">
 										<ul class="furgan-mini-cart cart_list product_list_widget">
-											<c:forEach var="p" items="${sessionScope['scopedTarget.cartService'].all}"> 
+											<c:forEach var="p" items="${sessionScope['scopedTarget.cartService2'].all}"> 
 											
-											<li class="furgan-mini-cart-item mini_cart_item"><a href="#" class="remove remove_from_cart_button">×</a> 
-											<a	href="#"> <img src="<c:url value="/images"/>/${p.img }"class="attachment-furgan_thumbnail size-furgan_thumbnail" alt="img" width="600" height="778"> ${p.name } &nbsp;
-											</a> <span class="quantity"> ${p.quantity } ×  ${p.price }
-											<span class="furgan-Price-amount amount"><span class="furgan-Price-currencySymbol">VND</span>  </span></span>
+											<li class="furgan-mini-cart-item mini_cart_item"><a   class="btnRemoveItemCart remove_from_cart_button" data-id="${p.id }">×</a> 
+											<a	href="<c:url value="/san-pham"/>/${p.product.slug }"> <img src="<c:url value="/images"/>/${p.product.img }"class="attachment-furgan_thumbnail size-furgan_thumbnail" alt="img" width="600" height="778"> ${p.product.name } &nbsp; </a> 
+												<span class="quantity">Size: ${p.size.name } / Màu :${p.color.name }  </span>
+												<br>
+												<span class="quantity"><f:formatNumber value="${p.product.price *(100-p.product.discount)/100 }"  pattern="#,###" /> × ${p.quantity_order} sp   	</span>
 											</li>
 											
 											</c:forEach>
@@ -202,7 +143,7 @@
 										<p class="furgan-mini-cart__total total">
 											<strong> Tổng tiền:</strong> <span id="cart-total-price"
 												class="furgan-Price-amount amount"><span
-												class="furgan-Price-currencySymbol">VND</span> <f:formatNumber value="${cart.totalPrice}" pattern="#,###.00	" ></f:formatNumber>    </span>
+												class="furgan-Price-currencySymbol">VND</span> <f:formatNumber value="${cart.totalPrice}" pattern="#,###	" ></f:formatNumber>    </span>
 										</p>
 										<p class="furgan-mini-cart__buttons buttons">
 											<a href="/gio-hang/danh-sach" class="button furgan-forward">Xem giỏ hàng</a>
@@ -296,7 +237,7 @@
 		<div class="header-mobile-mid">
 			<div class="header-logo">
 				<a href="index.html"><img alt="Furgan"
-					src="assets/images/logo.png" class="logo"></a>
+					src="<c:url value='/template/web/assets/images/logo.png '/>" class="logo"></a>
 			</div>
 		</div>
 		<div class="header-mobile-right">
@@ -309,27 +250,16 @@
 						<ul class="sub-menu">
 							<li
 								class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--dashboard is-active">
-								<a href="#">Dashboard</a>
+								<a href="<c:url value='/tai-khoan'/>">Thông tin tài khoản</a>
 							</li>
 							<li
 								class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--orders">
-								<a href="#">Orders</a>
+								<a href="<c:url value='/don-hang'/>">Quản lý đơn hàng</a>
 							</li>
-							<li
-								class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--downloads">
-								<a href="#">Downloads</a>
-							</li>
-							<li
-								class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--edit-adchair">
-								<a href="#">Address</a>
-							</li>
-							<li
-								class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--edit-account">
-								<a href="#">Account details</a>
-							</li>
+						
 							<li
 								class="menu-item furgan-MyAccount-navigation-link furgan-MyAccount-navigation-link--customer-logout">
-								<a href="#">Logout</a>
+								<a href="<c:url value='/thoat'/>">Thoát</a>
 							</li>
 						</ul>
 					</div>
@@ -440,3 +370,17 @@
 				</div>
 			</div>
 		</div>
+		
+		
+<script type="text/javascript">
+
+
+ $(".tableShopingCart").on("click",".btnRemoveItemCart",function (e) {
+	var curentPage=$(location).attr("href");
+	e.preventDefault(); 
+	var id =($(this).attr("data-id"));
+    $.get("/cart/remove/"+id, function(data, status){
+	    $(".tableShopingCart").load(curentPage + " .tableShopingCart");
+      });  
+}); 
+</script>		

@@ -22,10 +22,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("account") UserEntity account, HttpSession session, HttpServletRequest request,
-			ModelMap modelMap) {
-		
-		
+	public ModelAndView save(@ModelAttribute("account") UserEntity account, HttpSession session, HttpServletRequest request,ModelMap modelMap) {	
 		String captcha = session.getAttribute("captcha_security").toString();
 		String verifyCaptcha = request.getParameter("captcha");
 		if (captcha.equals(verifyCaptcha)) {

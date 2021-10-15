@@ -7,7 +7,7 @@ import com.projectjavasem4.entities.OrderEntity;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 	
-	
+	OrderEntity findOneByEmail(String email);
 	
 	@Query(nativeQuery = true, value = "select last_insert_id()") 
 	Long getLastInsertId();

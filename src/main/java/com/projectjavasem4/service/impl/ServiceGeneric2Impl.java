@@ -1,5 +1,4 @@
 package com.projectjavasem4.service.impl;
-
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -15,9 +14,7 @@ import com.projectjavasem4.service.ServiceGeneric;
 @Service
 public class ServiceGeneric2Impl <T extends BaseEntity, D extends AbstractDTO<T>> implements ServiceGeneric<T, D> {
 	
-	
-	@Autowired
-	protected GenericRepository<T> genericRepository;
+	@Autowired protected GenericRepository<T> genericRepository;
 
 	@Override
 	public List<D> getAll() {

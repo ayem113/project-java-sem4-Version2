@@ -1,9 +1,7 @@
 package com.projectjavasem4.entities;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,37 +9,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import lombok.Data;
-
-
+import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "users")
 @Data
-
+@EqualsAndHashCode(callSuper = true)
 public class UserEntity extends BaseEntity {
-
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final long OTP_VALID_DURATION = 2 * 60 * 1000;   // 5 minutes
-	
-	
 	public boolean isOTPRequired() {
 		/*
 		 * if (this.getOneTimePassword() == null) { return false; }
 		 */
          
         long currentTimeInMillis = System.currentTimeMillis();
-        long otpRequestedTimeInMillis = this.otpRequestedTime.getTime();
-         
-        return (otpRequestedTimeInMillis + OTP_VALID_DURATION < currentTimeInMillis)?false:true;
-        
-        
+        long otpRequestedTimeInMillis = this.otpRequestedTime.getTime();   
+        return (otpRequestedTimeInMillis + OTP_VALID_DURATION < currentTimeInMillis)?false:true;    
     }
-	
 	
 	@Column(name = "one_time_password")
     private String oneTimePassword;
@@ -49,7 +34,6 @@ public class UserEntity extends BaseEntity {
     @Column(name = "otp_requested_time")
     private Date otpRequestedTime;
      
-
 	@Column(name = "captcha")
 	private String captcha;
 	
@@ -89,7 +73,6 @@ public class UserEntity extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_role",nullable=false)
-	
 	
 	private RoleEntity role;
 

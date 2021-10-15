@@ -25,6 +25,5 @@ public class AbstractDTO<T> {
 	private String alert;
 	private String message;
 	private String type;
-	
-	
+		
 }

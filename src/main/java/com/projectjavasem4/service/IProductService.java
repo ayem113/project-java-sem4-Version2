@@ -1,5 +1,4 @@
 package com.projectjavasem4.service;
-
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -8,7 +7,10 @@ import com.projectjavasem4.dto.ProductDTO;
 import com.projectjavasem4.entities.ProductEntity;
 public interface IProductService {
 	List<ProductDTO> findAll(Pageable pageable);
+	List<ProductEntity> findAll2(Pageable pageable);	
 	List<ProductDTO> getAll();
+	List<ProductEntity> getAllHirbernate();
+	List<ProductEntity> findBySpecical(int type);
 	int getTotalItem();
 	ProductDTO findById(long id);
 	//List<ProductEntity> findByIds(long ids);
@@ -20,8 +22,6 @@ public interface IProductService {
 	ProductDTO findByName(String name);
 	ProductDTO findBySlug(String slug);
 	boolean save(ProductDTO dto);
-	void delete(long[] ids);
-	void deleteById(long id);
-	
-	
+	boolean delete(long[] ids);
+	boolean deleteById(long id);	
 }

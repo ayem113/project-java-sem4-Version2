@@ -133,6 +133,11 @@ figure {
 	width: 1px;
 	word-wrap: normal !important;
 }
+.ui-autocomplete {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 .screen-reader-text:focus {
 	background-color: #eee;
 	clip: auto !important;
@@ -5882,6 +5887,12 @@ body.admin-bar #yith-quick-view-modal {
 	right: 10px;
 	position: absolute;
 }
+.product-item .variations_form2 {
+	top: 158px;
+    right: 240px;
+	position: absolute;
+}
+
 .product-item .variations_form .data-val a {
 	display: table;
 }
@@ -7450,7 +7461,7 @@ body.admin-bar #yith-quick-view-modal {
 }
 /*form single product*/
 .entry-summary form.cart {
-	margin-top: 24px;
+	
 	position: relative;
 }
 .entry-summary form.cart.variations_form .variations {
@@ -7525,7 +7536,7 @@ body.admin-bar #yith-quick-view-modal {
 }
 .entry-summary .cart .furgan-variation-add-to-cart-disabled .single_add_to_cart_button {
 	opacity: 0.5;
-	text-decoration: line-through;
+	
 	cursor: not-allowed;
 	pointer-events: none;
 }

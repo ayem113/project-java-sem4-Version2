@@ -56,14 +56,14 @@ ${error }
 					<td>Image#</td>
 					<td>
 						<div>
-							<img id="captcha_id" name="imgCaptcha" src="captcha/a">
+							<img id="captcha_id" name="imgCaptcha" src="captcha/getCapcha2">
 						</div>
 					</td>
 
 
 					<td align="left"><a href="javascript:;"
 						title="change captcha text"
-						onclick="document.getElementById('captcha_id').src = 'captcha/a' ;  return false">
+						onclick="document.getElementById('captcha_id').src = 'captcha/getCapcha2' ;  return false">
 							<img src="images/refresh.png" />
 					</a></td>
 

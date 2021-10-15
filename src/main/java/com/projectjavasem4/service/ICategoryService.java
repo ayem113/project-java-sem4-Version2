@@ -13,7 +13,6 @@ public interface ICategoryService   {
 	CategoryDTO findById(long id);
 	CategoryDTO save(CategoryDTO dto);
 	void delete(long[] ids);
-	void deleteById(long id);
-	
+	void deleteById(long id);	
 	Map<String, String> findAll();
 }

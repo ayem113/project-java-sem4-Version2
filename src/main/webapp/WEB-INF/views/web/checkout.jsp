@@ -4,6 +4,9 @@
 	<%@ page import="com.projectjavasem4.util.SecurityUtils"%>
 	
 	<c:url var="checkout" value="/checkout"/>
+	<c:url var="ProAPI" value="/api/product" />
+	<c:url var="ProAPI2" value="/api/product/getDisstrictById" />
+	
 <div class="banner-wrapper has_background">
     
     <div class="banner-wrapper-inner">
@@ -43,14 +46,17 @@
                             </div>
                         </div>
                         
-                        <form:form id="formSubmit" role="form" action="/checkout" modelAttribute="model"    >
+                        
+                        
+                        <form:form id="formSubmit"  action="" modelAttribute="model">
                             <div class="col2-set" id="customer_details">
                                 <div class="col-1">
                                     
                                     <div class="furgan-billing-fields">
                                         '
                                         <h3>Thông tin thanh toán</h3>
-                          		
+                          		<form:input type="hidden" path="total_price" value="${sessionScope['scopedTarget.cartService2'].totalPrice}" />
+                                        <form:input path="general_address" type="hidden" id="addressChoose"  value="" class="form-control" />
                                         
                                         <div class="furgan-billing-fields__field-wrapper">
                                             <p class="form-row form-row-first validate-required"
@@ -60,19 +66,19 @@
                                                     <span
                                                     class="furgan-input-wrapper">
                                                     
-                                                   
+                                       
+                                                  
+                                                    
                                                     
                                                   <% if(SecurityUtils.getPermission().size()>1 ){ %>
-																<form:input path="name" type="text"   value="<%=SecurityUtils.getPrincipal().getFullName()%>" class="form-control"     />
+																<form:input path="customer_name" type="text"   value="<%=SecurityUtils.getPrincipal().getFullName()%>" class="form-control"     />
+																<form:input path="id_user" type="hidden"   value="<%=SecurityUtils.getPrincipal().getId()%>" class="form-control" />
 													<% }
 													else{ %>
-																<form:input path="name" type="text"   class="form-control"   placeholder="tên của bạn"  />						
+																<form:input path="customer_name" type="text"   class="form-control"   placeholder="tên của bạn"  />		
+																					
 													<%} %>
-                                                    
-                                                    
-                                                    
-                                                    
-                                                                                             
+                                                                         
                                                   </span>
                                             </p>
                                             <p class="form-row form-row-last validate-required"
@@ -91,135 +97,135 @@
                                                     
                                                     </span>
                                             </p>
+       
                                             <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
+                                               id="billing_last_name_field" data-priority="20"><label
+                                                    for="billing_last_name" class="">Email&nbsp;<abbr
+                                                    class="required" title="required">*</abbr></label>
+                                                    <span
+                                                    class="furgan-input-wrapper">
+                                                    
+                                                    <% if(SecurityUtils.getPermission().size()>1 ){ %>
+																<form:input path="email" type="email"   value="<%=SecurityUtils.getPrincipal().getEmail()%>" class="form-control"     />
+													<% }
+													else{ %>
+																<form:input path="email" type="email"   class="form-control"   placeholder="địa chỉ email.."  />						
+													<%} %>
+                                                    
+                                                    </span>
+                                            </p>
+
+											<p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
                                                id="billing_country_field" data-priority="40"><label
                                                     for="billing_country" class="">Tỉnh/TP &nbsp;<abbr class="required" title="required">*</abbr></label>
                                                 <span class="furgan-input-wrapper">
-                                                <select name="billing_country"
-                                                        id="billing_country"
+                                                <select name="province"
+                                                        id="province"
                                                         class="country_to_state country_select"
                                                         autocomplete="country"
                                                         tabindex="-1"
-                                                        aria-hidden="true"><option
-                                                    value="">Select a country…</option><option
-                                                    value="AX">Åland Islands</option><option
-                                                    value="AF">Afghanistan</option><option value="AL">Albania</option><option
-                                                    value="DZ">Algeria</option><option
-                                                    value="AS">American Samoa</option><option
-                                                    value="AD">Andorra</option><option value="AO">Angola</option><option
-                                                    value="AI">Anguilla</option><option value="AQ">Antarctica</option><option
-                                                    value="ZW">Zimbabwe</option></select>
+                                                        aria-hidden="true">
+                                                   <option >Chon tỉnh/Tp</option>     
+                                                 <c:forEach var="item" items="${province}">
+											        <option value="${item.id}">${item._name}</option>
+											    </c:forEach>
+                                                 </select>
                                                 </span>
                                             </p>
-                                            <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"  id="billing_country_field" data-priority="40"><label                                                    
-                                            for="billing_country" class="">Quận/Huyện &nbsp;<abbr class="required" title="required">*</abbr></label>
+                                            <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"  id="billing_country_field" data-priority="40">
+                                            <label  for="billing_country" class="">Quận/Huyện &nbsp;<abbr class="required" title="required">*</abbr></label>
                                                 <span class="furgan-input-wrapper">
-                                                <select name="billing_country"
-                                                        id="billing_country"
+                                                <select name="disstrict"
+                                                        id="disstrict"
                                                         class="country_to_state country_select"
                                                         autocomplete="country"
                                                         tabindex="-1"
-                                                        aria-hidden="true"><option
-                                                    value="">Select a country…</option><option
-                                                    value="AX">Åland Islands</option><option
-                                                    value="AF">Afghanistan</option><option value="AL">Albania</option><option
-                                                    value="DZ">Algeria</option><option
-                                                    value="AS">American Samoa</option><option
-                                                    value="AD">Andorra</option><option value="AO">Angola</option><option
-                                                    value="AI">Anguilla</option><option value="AQ">Antarctica</option><option
-                                                    value="ZW">Zimbabwe</option></select>
+                                                        aria-hidden="true">
+                                                        
+                                                 </select>
                                                 </span>
                                             </p>
 										    <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"
                                                id="billing_country_field" data-priority="40"><label
                                                     for="billing_country" class="">Phường/Thị xã &nbsp;<abbr class="required" title="required">*</abbr></label>
                                                 <span class="furgan-input-wrapper">
-                                                <select name="billing_country"
-                                                        id="billing_country"
+                                                <select name="ward"
+                                                        id="ward"
                                                         class="country_to_state country_select"
                                                         autocomplete="country"
                                                         tabindex="-1"
-                                                        aria-hidden="true"><option
-                                                    value="">Select a country…</option><option
-                                                    value="AX">Åland Islands</option><option
-                                                    value="AF">Afghanistan</option><option value="AL">Albania</option><option
-                                                    value="DZ">Algeria</option><option
-                                                    value="AS">American Samoa</option><option
-                                                    value="AD">Andorra</option><option value="AO">Angola</option><option
-                                                    value="AI">Anguilla</option><option value="AQ">Antarctica</option><option
-                                                    value="ZW">Zimbabwe</option></select>
+                                                        aria-hidden="true">
+                                                 </select>
                                                 </span>
                                             </p>
+                                            				
+													
+                                            
+                                            
                                             <p class="form-row form-row-wide validate-required validate-phone"
                                                id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Địa chỉ cụ thể&nbsp;<abbr
-                                                    class="required" title="required">*</abbr></label><span
+                                                    class="required" title="required">*</abbr></label>
+                                                    <span
                                                     class="furgan-input-wrapper">
-                                                     <% if(SecurityUtils.getPermission().size()>1 ){ %>
-																<form:input path="address" type="text"   value="<%=SecurityUtils.getPrincipal().getAddress()%>" class="form-control"    />
-													<% }
-													else{ %>
-																<form:input path="address" type="text"   class="form-control"   placeholder="địa chỉ"  />				
-													<%} %>
-                                                   
+														<form:input path="detail_address" type="text"   class="form-control"   placeholder="địa chỉ"  />				
                                                    </span>
-                                            </p>
+                                            </p>		
+     
                                             <p class="form-row form-row-wide adchair-field update_totals_on_change validate-required"  id="billing_country_field" data-priority="40"><label                                                    for="billing_country" class="">HÌnh thức thanh toán &nbsp;<abbr class="required" title="required">*</abbr></label>
                                                 <span class="furgan-input-wrapper">
-                                                <select name="billing_country"
+                                                <form:select path="payment_methods" name="billing_country"
                                                         id="billing_country"
                                                         class="country_to_state country_select"
                                                         autocomplete="country"
                                                         tabindex="-1"
                                                         aria-hidden="true"><option
                                                     value="">Select a country…</option><option
-                                                    value="A1">Thanh toán khi nhận hàng</option><option
-                                                    value="A2">Thanh toán trực tuyến</option><option value="AL">Albania</option><option
-                                                    value="D3">Thẻ ngân hàng</option><option
-                                                    value="A4">Chuyển kho</option><option></select>
+                                                    value="Thanh toán khi nhận hàng">Thanh toán khi nhận hàng</option><option
+                                                    value="Thanh toán trực tuyến">Thanh toán trực tuyến</option>
+                                                    <option
+                                                    value="Thẻ ngân hàng">Thẻ ngân hàng</option><option
+                                                    value="Chuyển kho">Chuyển kho</option><option></form:select>
                                                 </span>
                                             </p>
-										
+						
 										</div>
-                                    </div>
-                                    
+                                    </div>                     
                                 </div>
                                 <button type="submit" id="btnCheckout" class="btn btn-info btn-fill pull-right">Thanh toán</button>
-                            </div>
-                            
-                            
+                            </div>                  
                         </form:form>
-                            
-                            
-                            
-                            
-                            
-                            
-                            <h3 id="order_review_heading">Sản phẩm</h3>
+                            <h3 id="order_review_heading">Danh sách Sản phẩm</h3>
                             <div id="order_review" class="furgan-checkout-review-order">
                                 <table class="shop_table furgan-checkout-review-order-table">
                                     <thead>
                                     <tr>
-                                        <th class="product-name">Product</th>
-                                        <th class="product-total">Total</th>
+                                        <th class="product-name">Tên sp</th>
+                                        <th class="product-total">Đơn giá</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="p" items="${sessionScope['scopedTarget.cartService'].all}">
+                                    <c:forEach var="p" items="${sessionScope['scopedTarget.cartService2'].all}">
                                     <tr class="cart_item">
-                                        <td class="product-name"> ${p.name}
-                                            <strong class="product-quantity">×  ${p.quantity}</strong>
+                                        <td class="product-name"> ${p.product.name}
+                                            <strong class="product-quantity">×  ${p.quantity_order}</strong>
                                         </td>
                                         <td class="product-total">
-                                           <span class="furgan-Price-amount amount"><span class="furgan-Price-currencySymbol"></span>${(p.price * p.quantity * ((100 - p.discount))) / 100}</span>
+                                           <span class="furgan-Price-amount amount"><span class="furgan-Price-currencySymbol"></span>
+                                           <f:formatNumber pattern="###,###" value="${(p.product.price * p.quantity_order * ((100 - p.product.discount))) / 100}" type="currency"/> &nbsp;₫
+                                           </span>
                                         </td>
                                         </tr>            
                                      </c:forEach>
                                     </tbody>
                                     <tfoot>
                                     <tr class="order-total">
-                                        <th>Total</th>
-                                        <td><strong><span class="furgan-Price-amount amount"><span
-                                                class="furgan-Price-currencySymbol">VND </span>${sessionScope['scopedTarget.cartService'].totalPrice}</span></strong>
+                                        <th>Tổng tiền</th>
+                                        
+                                        <c:set var="accountBalance"  value="${sessionScope['scopedTarget.cartService2'].totalPrice}" />
+      									
+      									
+                                        
+                                        <td><strong><span class="furgan-Price-amount amount"><f:formatNumber pattern="###,###" value="${accountBalance}" type="currency"/> &nbsp;₫ </span></strong>
                                         </td>
                                     </tr>
                                     </tfoot>
@@ -269,53 +275,89 @@
     
 <script type="text/javascript">
 
+
+
+$('select[name=province]').on('change', function(e) {
+	e.preventDefault(); 	
+	  var id= this.value;
+	      $.get('/getAllDisstrictById/'+id, function(data){
+	    	  var response = data;
+	    	  select = $("#disstrict");
+	    	  options = '';
+	    	  select.empty();  
+	    	   
+	    	   for(var i=0;i<response.length; i++)
+	    	   {
+	    	    options += "<option value='"+response[i].id+"'>"+ response[i]._name +"</option>";   
+	    	   }
+
+	    	   select.append(options);
+	    	
+	     });	   
+	});
+	
+	
+$('select[name=disstrict]').on('change', function(e) {
+	e.preventDefault(); 	
+	  var id= this.value;
+	  
+	       $.get('/getAllWardById/'+id, function(data){
+	    	   
+	    	   console.log(data);
+	    	   var response = data;
+	    	  select = $("#ward");
+	    	  options = '';
+	    	  select.empty();  
+	    	   
+	    	   for(var i=0;i<response.length; i++)
+	    	   {
+	    	    options += "<option value='"+response[i].id+"'>"+ response[i]._name +"</option>";   
+	    	   }
+
+	    	   select.append(options); 
+	    	
+	     });	  
+});
+$('select[name=ward]').on('change', function(e) {
+	var province = $("#province option:selected").text();
+	var disstrict = $("#disstrict option:selected").text();
+	var ward = $("#ward option:selected").text();	
+
+	$( "#addressChoose" ).val("--"+ward+"--"+disstrict+"--"+province);
+
+});
+
 $('#formSubmit').submit(function (e) {
-	e.preventDefault(); //huy bo su kien mac dinh cua trang 
+	e.preventDefault(); 
 
 	console.log(new FormData(this));
-    $.ajax({
+
+	
+     $.ajax({
         url: '${checkout}',
         type: 'POST',
         dataType: "text",
-        data: new FormData(this),
+        data: new FormData(this),   
         processData: false,
-        
+        contentType: false, 
         success: function (result) {
-        
-        	Swalalert(result,"success");
+        	//Swalalert(result,"success");
+        	 if (result=="true") {
+    			Swalalert("Thanh toán thành công","success");
+    			window.location = 'http://localhost:8080';	
+    		}else
+    		{
+    			console.log(result);
+    			Swalalert("Thanh toán không thành công!","error")   			
+    		}; 
         
         },
         error: function (result) {
         	
          	Swalalert(result,"error");
         }
-    });
-});
-
-/* $(".btnChekout").click(function (e){
-	
-	FormData form = new FormData("#formSubmit");
-	console.log(form);
-	
-	e.preventDefault(); //huy bo su kien mac dinh cua trang 
-    $.ajax({
-        url: '${checkout}',
-        type: 'POST',
-        dataType: "JSON",
-        //enctype: 'multipart/form-data',
-        data: form,
-        processData: false,
-        contentType: false,
-        success: function (result) {
-        	Swalalert(result,"success");
-        },
-        error: function (error) {
-        	Swalalert(result,"error");
-        }
     }); 
-});*/
-    
-    
+});
     
 function Swalalert(mess,icon) {
 		Swal.fire({
@@ -325,7 +367,6 @@ function Swalalert(mess,icon) {
 			  showConfirmButton: false,
 			  timer: 1500
 			});
-			
-		
+
 	};
 </script>

@@ -1,35 +1,26 @@
 package com.projectjavasem4.service.impl;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
 import com.projectjavasem4.dto.CategoryDTO;
 import com.projectjavasem4.entities.CategoryEntity;
-import com.projectjavasem4.entities.UserEntity;
 import com.projectjavasem4.repository.CategoryRepository;
 import com.projectjavasem4.service.ICategoryService;
-
 @Service
 public class CategoryService implements ICategoryService {
 
-	@Autowired
-	private CategoryRepository CatRep;
-
-	@Autowired
-	private JpaRepository<CategoryEntity, Long> AbRep;
+	@Autowired private CategoryRepository CatRep;
+	@Autowired private JpaRepository<CategoryEntity, Long> AbRep;
 
 	@Override
 	public List<CategoryDTO> findAll(Pageable pageable) {
 		return null;
-
 	}
 
 	@Override
@@ -39,11 +30,8 @@ public class CategoryService implements ICategoryService {
 
 	@Override
 	public CategoryDTO findById(long id) {
-
 		CategoryEntity pro = CatRep.findOne(id);
-
 		return new ModelMapper().map(pro, CategoryDTO.class);
-
 		// proRep.getOne(id);
 	}
 
@@ -65,7 +53,6 @@ public class CategoryService implements ICategoryService {
 		List<CategoryEntity> entities = AbRep.findAll();
 		for (CategoryEntity item : entities) {
 			CategoryDTO p = new ModelMapper().map(item, CategoryDTO.class);
-
 			models.add(p);
 		}
 		return models;
@@ -74,7 +61,6 @@ public class CategoryService implements ICategoryService {
 	@Override
 	public void deleteById(long id) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

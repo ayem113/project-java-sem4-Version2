@@ -1,22 +1,19 @@
 package com.projectjavasem4.entities;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
-
+import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "category")
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CategoryEntity extends BaseEntity {
+
+	private static final long serialVersionUID = 1L;
 
 	@Column(name = "id_parent")
 	private Long id_parent;
@@ -38,7 +35,5 @@ public class CategoryEntity extends BaseEntity {
 
 	@OneToMany(mappedBy = "category")  //@JsonIgnore
 	private List<ProductEntity> products = new ArrayList<>();
-
-
 
 }

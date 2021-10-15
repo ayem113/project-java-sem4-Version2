@@ -17,14 +17,10 @@ public class CategoryAPI {
 	@Autowired
 	private ICategoryService CatService;
 
-	
 	@GetMapping("/api/category")
 	public List<CategoryDTO> getAll() {
 		return CatService.getAll();
 	}
-	
-	
-	
 
 	@DeleteMapping("/api/category")
 	public void deleteNew(@RequestBody long[] ids) {

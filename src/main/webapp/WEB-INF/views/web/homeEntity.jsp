@@ -103,8 +103,10 @@
 					</div>
 				</div>
 
-
-				<label for="cars">Hiển thị sản phẩm một trang:</label>
+				<div class="row"> 
+				
+				<div class="col-md4">
+				<label for="cars">Hiển thị số sản phẩm</label>
 				<div class="dropdownLimit">
 					<select name="limit">
 						<option value="5">5</option>
@@ -113,6 +115,32 @@
 						<option value="20">20</option>
 					</select>
 				</div>
+				</div>
+				
+				<div class="col-md4">
+				<select class="form-select" aria-label="Default select example">
+				  <option selected>Sắp xếp theo</option>
+				  <option value="1">------Phổ biến------</option>
+				  <option value="2">------Mới nhất------</option>
+				  <option value="3">------Bán chạy------</option>
+				</select>
+				
+				<select class="form-select" aria-label="Default select example">
+				  <option selected>Giá</option>
+				  <option value="1">Từ thấp đến cao</option>
+				  <option value="2">Từ cao đến thấp</option>
+				</select>
+				
+				</div>
+				<div class="col-md4">
+					<label for="site-search">Tìm kiếm</label>
+					<input type="search" id="site-search" name="q" aria-label="Search through site content">
+					<button>Tìm kiếm</button>
+				</div>
+				
+				</div>
+
+				
 
 
 
@@ -125,7 +153,7 @@
 						<div
 							class="response-product product-list-grid row auto-clear equal-container better-height ">
 
-							<c:forEach var="item" items="${model.listResult}">
+							<c:forEach var="item" items="${listProEntity}">  <!-- model.listResult -->
 
 
 								<div
@@ -138,9 +166,88 @@
 												alt="Office Chair" width="270" height="350">
 											</a>
 											<div class="flash">
-												<span class="onsale"><span class="number">-11%</span></span>
+												<span class="onsale"><span class="number">-${item.discount}%</span></span>
+												
+												
+												
 												<span class="onnew"><span class="text">New</span></span>
 											</div>
+											
+                                			
+                                			<div class="variations_form cart">
+			                                    <table class="variations">
+			                                        <tbody>
+			                                        <tr>
+			                                            <td class="value">
+			                                                <select title="box_style" data-attributetype="box_style" data-id="pa_color" class="attribute-select "  data-show_option_none="yes">
+			                                                    <option data-type="" data-pa_color="" value="">Choose an option
+			                                                    </option>
+			                                                    <option data-width="30" data-height="30" data-type="color" data-pa_color="#ff63cb" value="pink" class="">
+			                                                    
+			                                                    </option>
+			                                                    <option data-width="30" data-height="30" data-type="color" data-pa_color="#a825ea" value="purple" class="attached enabled">Purple
+			                                                    </option>
+			                                                    <option data-width="30" data-height="30" data-type="color" data-pa_color="#db2b00" value="red" class="attached enabled">Red
+			                                                    </option>
+			                                                </select>
+			                                                <div class="data-val attribute-pa_color" data-attributetype="box_style">
+			                                                
+			                                                <c:forEach var="item2" items="${item.product_detailGroupByColor}">  
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            <a class="change-value color" href="#"  style="background: ${item2.color.code};" data-value="red">  </a>
+                                                            
+                                                            </c:forEach>
+			                                                
+			                                                
+			                                                </div>
+			                                                <a class="reset_variations" href="#" style="visibility: hidden;">Clear</a>
+			                                            </td>
+			                                        </tr>
+			                                        </tbody>
+			                                    </table>
+                                			</div>
+                                			
+                                			
+                                			
+                                			
+                                			
+                                			<div class="variations_form2 cart">
+                                                <table class="variations">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="value">
+                                                            <select title="box_style" data-attributetype="box_style" data-id="pa_color" class="attribute-select "  data-show_option_none="yes">
+                                                                <option data-type="" data-pa_color="" value="">Choose an
+                                                                    option
+                                                                </option>
+                                                                <option data-width="30" data-height="30" data-type="color" data-pa_color="#000000" value="black" class="attached enabled">Black
+                                                                </option>
+                                                                <option data-width="30" data-height="30" data-type="color" data-pa_color="#db2b00" value="red" class="attached enabled">Red
+                                                                </option>
+                                                            </select>
+                                                            
+                                                            
+                                                            <div class="data-val attribute-pa_color" data-attributetype="box_style">
+                                                            
+                                                            <c:forEach var="item2" items="${item.product_detail}">  
+                                                            
+                                                            
+                                                            <a class="change-value color" href="#"  data-value="red"> ${item2.size.name} </a>
+                                                            
+                                                            </c:forEach>
+                                                            </div>
+                                                            <a class="reset_variations" href="#" style="visibility: hidden;">Clear</a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                			
+                                			
+                                			
+                                			
 											<div class="group-button">
 												<div class="add-to-cart">
 													<a data-id='${item.id}'
@@ -161,9 +268,13 @@
 											</div>
 										</div>
 										<div class="product-info">
+										
 											<h3 class="product-name product_title">
-												<a href="/san-pham?name=${item.slug}">${item.name}</a> <a
-													href="/san-pham/${item.slug}">${item.name}</a>
+											
+												<a href="/san-pham/${item.slug}">${item.name}</a>
+												
+												
+												 
 											</h3>
 											<span class="price"><del>
 													<span class="furgan-Price-amount amount"><span
@@ -196,12 +307,12 @@
 						<ul class="pagination" id="pagination"></ul>
 						
 						<div id="DanhmucMa">
-							<input type="hidden" value="${model.cateCode}" id="cateCode" name="danh-muc" />
+							<input type="hidden" value="${cateCode}" id="cateCode" name="danh-muc" />
 						</div>
 						
 						 
-						<input type="hidden" value="${model.page}" id="page" name="page" /> 
-						<input type="hidden" value="${model.limit}" id="limit" name="limit" />
+						<input type="hidden" value="${page}" id="page" name="page" /> 
+						<input type="hidden" value="${limit}" id="limit" name="limit" />
 						
 							
 
@@ -616,14 +727,8 @@
 
 
 	<script type="text/javascript" charset="utf-8" >
-	
-	
-	
-	
-	
 	function swalAlert(mess,icon){
-		
-		Swal.fire({
+	Swal.fire({
 			  position: 'top',
 			  icon: icon,
 			  title: mess,
@@ -694,46 +799,25 @@ function setInfo(){
 }
 
 $('.btnAddToCart').click(function (e) {
-	e.preventDefault(); 
-   	
+	e.preventDefault(); 	
 	var cart = $('.flaticon-cart');
-    var imgtodrag = $(this).parents('.product-thumb').find(".thumb-link img");
-    
+    var imgtodrag = $(this).parents('.product-thumb').find(".thumb-link img"); 
     flyToCart(imgtodrag,cart);
-	
-    
-    
-    
-	var id =($(this).attr("data-id"));
-	
-	
-   	
-   
-    
-    
-    $.get("/cart/add2/"+id, function(data, status){
+  	var id =($(this).attr("data-id"));
+    $.get("/cart/add/"+id, function(data){
+    	console.log(data);
     	setInfo();
-    	if (data!=" ") {
-    		swalAlert(data,"success");
-		}
-    	
-     });
-    
-   
-    
-    
-
-    
-	
+    	if (data=="false") {
+    		swalAlert("Sản phẩm đã tồn tại trong giỏ hàng","warning");
+		}  	
+     });	
 });
 
 $('.btnAddToWishlist').click(function (e) {
 	e.preventDefault(); //huy bo su kien mac dinh cua trang 
    	var id =($(this).attr("data-id"));
-	
-	
     $.get("/wishlist/add/"+id, function(data, status){
-        if (data) {
+        if (data=="true") {
         	swalAlert("Đã thêm vào danh sách yêu thích","success");
 		}
         else{
@@ -746,8 +830,8 @@ $('.btnAddToWishlist').click(function (e) {
 });
 
 
-var totalPages = ${model.totalPage};
-var currentPage = ${model.page};
+var totalPages = ${totalPage};
+var currentPage = ${page};
 
 
 
@@ -755,15 +839,11 @@ $('#pagination').twbsPagination({
 	totalPages: totalPages,
     visiblePages: 10,
     startPage: currentPage,
-    onPageClick: function (event, page) {
-    	
+    onPageClick: function (event, page) {	
     	$('#pageT').val(page);
     	if (currentPage != page) {
-    		
-    		
+	
     		/* $('#limit').val($(".dropdownLimit option:selected").val());*/
-			
-			
 			$('#page').val(page);
 			$('#formSubmit').submit();
 		}
@@ -772,39 +852,26 @@ $('#pagination').twbsPagination({
 
 
 
-$('select').on('change', function() {
-	
-	
+	$('select').on('change', function() {
 	  $('#limit').val(this.value);
 	  $('#page').val($('#pageT').val());
-	  $('#formSubmit').submit();
-	  
+	  $('#formSubmit').submit();  
 	  // cach 1 luwu seesion js cai value vua duoc chon 
-	  //sessionStorage.setItem("select", this.value);
-	 
-	  
-	  
-	
-	
-	
+	  //sessionStorage.setItem("select", this.value);	
 	});
 	window.addEventListener('load', (event) => {
 		 ///casch 2 : set value cho cac select = du lieu tra ve ben controller 
-		 $('select[name=limit]').val(${model.limit});
+		$('select[name=limit]').val(${limit});
 		if($('#cateCode').val() == ''){
-			$('#DanhmucMa').html('');
-			
+			$('#DanhmucMa').html('');		
 		}
-	
 		//getSessionLimit();
 	});
 
 	//sau do get seesion ra roi set attr cho no la select
 	function getSessionLimit(){
-		
 		let data = sessionStorage.getItem('select');
-		  $('.dropdownLimit option[value='+data+']').attr('selected','selected');
-		
+		$('.dropdownLimit option[value='+data+']').attr('selected','selected');
 	}
 	
 	

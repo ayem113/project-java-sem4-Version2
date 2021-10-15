@@ -25,7 +25,6 @@ public class JPAConfig {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
-
 		em.setPersistenceUnitName("persistence-data");
 		
 		
@@ -58,8 +57,8 @@ public class JPAConfig {
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/dbprojectjavasem4springmvc");
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/dbprojectjavasem4springmvc");  //?useSSL=false
 		dataSource.setUsername("root");
 		dataSource.setPassword("1234$");
 
@@ -69,17 +68,12 @@ public class JPAConfig {
 		 * "jdbc:sqlserver://localhost:1433;databaseName=dbprojectjavasem4springmvc");
 		 * dataSource.setUsername("sa"); dataSource.setPassword("1234$");
 		 */
-
 		return dataSource;
-
 	}
 
 	Properties additionalProperties() {
 		Properties properties = new Properties();
-		
-
-		//properties.setProperty("hibernate.hbm2ddl.auto", "create");
-		
+		//properties.setProperty("hibernate.hbm2ddl.auto", "create");	
 		 //properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		// //org.hibernate.dialect.MySQL5Dialect
 		 properties.setProperty("hibernate.hbm2ddl.auto", "none");

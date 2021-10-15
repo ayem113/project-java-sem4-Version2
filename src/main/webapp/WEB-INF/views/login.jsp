@@ -1,7 +1,38 @@
 
 <%@include file="/common/taglib.jsp"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<c:url var="ProAPI" value="/changePass"/>
+<c:url var="changePass" value="/changePass"/>
+<c:url var="changePass2" value="/changePass2"/>
+
+<link href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard_theme_dots.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.smartWizard.min.js"></script>
+<style>
+form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0rem rgba(0, 123, 255, .25)
+}
+
+.btn-secondary:focus {
+    box-shadow: 0 0 0 0rem rgba(108, 117, 125, .5)
+}
+
+.close:focus {
+    box-shadow: 0 0 0 0rem rgba(108, 117, 125, .5)
+}
+
+.mt-200 {
+   /*  margin-top: 200px */
+}
+
+</style>
+
+<div id="fb-root"></div>
+<!-- <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v11.0&appId=273178294430134&autoLogAppEvents=1" nonce="pveHedS2"></script> -->
+
 
 	<div class="container">
 
@@ -56,8 +87,10 @@
                                         	</div>
                                         	<div class="col-md-6">
                                         	<div class="text-center">
-                                        <%-- <a class="small" href="<c:url value='/quen-mat-khau'/>">Quên mật khẩu</a> --%>
-                                        <a class="small btnForget" href="">Quên mật khẩu</a>
+                                       
+                                  <!--       		<a class="small btnForget" href="">Quên mật khẩu</a> -->
+                                        		
+                                        		<a  class="small btnForget2" href="" data-toggle="modal" data-target="#exampleModal"> quên mật khẩu  </a> 
                                    			 </div>
                                         	
                                         	</div>
@@ -68,12 +101,16 @@
                                        
                                         <button type="submit" class="btn btn-primary btn-user btn-block" >Đăng nhập</button>
                                         <hr>
+                                        
+                                      <!--   <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true"></div>
+                                        <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                                         -->  <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                            <i class="fab fa-facebook-f fa-fw"></i> Đăng nhập bằng Facebook
+                                        </a>
                                         <a href="index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Đăng nhập bằng Google
                                         </a>
-                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Đăng nhập bằng Facebook
-                                        </a>
+                                      
                                     </form>
                                     <hr>
                                     
@@ -93,56 +130,64 @@
         </div>
         
         
-<div id="emailModal" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-   
-      <div class="modal-body">
-        
-        <form:form id="formSubmit" role="form" action="" modelAttribute="model" method="POST">
-        
-        <div class="row">
-        <div class="col-md-9">
-        	
-        <form:input path="email" type="email"  id="emailAddress" class="form-control"   placeholder="Nhập email của bạn"  />
-        <h5 id="result"></h5>
-        </div>
-        <div class="col-md-3">
-        	<button  style=" width: 100%;"  type="button" class="btnSendMail btn btn-info">Gửi mã</button>
-        </div>
-        
-        </div> 
-        
-        <br>
-        <div class="row">
-        <div class="col-md-9">
-        	<form:input path="otp" class="form-control" style="width: 100%; height: 40px;"  id="verifyCode" type="text" placeholder="Nhập mã xác minh bạn nhận được"/> 
-        </div>
-        <div class="col-md-3">
-        	<button style=" width: 100%;" type="submit" class="btnVerifyCode btn btn-info">Xác thực</button>
-        </div>
-        
-        </div>
-         <br>
-        
-        <div class="row">
-        <div class="col-md-9">
-        	<form:input path="password"  class="form-control" style="width: 100%; height: 40px;"  id="changePass" type="hidden" placeholder="Nhập mật khẩu mới của bạn"/>
-        </div>
-        <div class="col-md-3">
-        	<button  style=" width: 100%;display:none;  " type="submit" class="btnChangePass btn btn-info">OK</button>
-        </div>
-        
-        </div> 
-        
-        </form:form>
 
-         
-      </div>
-      
-    </div>
-  </div>
-</div>
+
+
+
+ 
+ 
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content " style="width: 475px; margin: 0 auto;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Lấy lại mật khẩu</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <div id="smartwizard">
+                        <ul>
+                            <li><a href="#step-1">Bước 1<br /><small>Nhập Email của bạn</small></a></li>
+                            <li><a href="#step-2">Bước 2<br /><small>Nhập mã xác minh</small></a></li>
+                            <li><a href="#step-3">Bước 3<br /><small>Nhập mật khẩu mới</small></a></li>
+                            
+                        </ul>
+                        <div>
+                            <div id="step-1">
+                                <div class="row" style="width: 400px; margin: 0 auto;" >
+                                   
+                                    <div class="col-md-10"> <input type="text"  id="emailAddress" class="form-control" placeholder="Nhập  email của bạn....." required> <h5 id="result"></h5></div>
+                                    <div class="col-md-2"> <button type="button" class="btnSendMail btn btn-success">Tiếp</button> </div>
+                                
+                                </div>
+                                
+                            </div>
+                            <div id="step-2">
+                                <div class="row"  style="width: 400px; margin: 0 auto;">
+                                    <div class="col-md-10"> <input id="verifyCode" type="text" class="form-control" placeholder="Nhập mã Otp được gửi đến email của bạn....." required><h5 id="result2"></h5> </div>
+                               			<div class="col-md-2"> <button type="button" class="btnCheckOtp btn btn-success">Tiếp</button> </div>
+                                </div>
+                                
+                            </div>
+                            <div id="step-3" >
+                                <div class="row"  style="width: 400px; margin: 0 auto;">
+                                    <div class="col-md-10"> <input type="text" class="form-control"  id="newPass" placeholder="Mật khẩu mới của bạn....." required> </div>
+                                   <div class="col-md-2"> <button type="button" class="btnChangePass btn btn-success">Tiếp</button> </div>
+                                </div>
+                                
+                            </div>
+                            
+                            
+                        </div>
+                    
+              
+                    </div>
+                </div>
+            
+            	
+            </div>
+        </div>
+         </div>
+        
 
         
 
@@ -156,20 +201,97 @@ function Swalalert(mess,icon) {
 		  showConfirmButton: false,
 		  timer: 1500
 		});
-		
-	
+};
+function emailCheck(email) {
+	  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	  return re.test(email);
 };
 
-$("a.btnForget").bind('click', function (e) {
-	e.preventDefault(); 
-	$('#emailModal').modal("show");
+
+$(document).ready(function(){
+
+	$('#smartwizard').smartWizard({
+		selected: 0,
+		theme: 'dots',
+		autoAdjustHeight:true,
+		transitionEffect:'fade',
+		showStepURLhash: false,	
+		toolbarSettings: { showNextButton: false, showPreviousButton: false},
+	});
+	
+	
+	
+	$(".btnSendMail").click(function(e){	
+		 e.preventDefault(); 
+		 const $mess = $("#result");
+		 const email = $("#emailAddress").val();	  
+		if (emailCheck(email)) {
+			$.get('/sendMailResetPass/'+email, function(result){  
+				if (result=="true") {
+					Swalalert("Đã gửi mail. Vui lòng kiểm tra email của bạn!","success");
+					$('#smartwizard').smartWizard("next");
+				}else{
+					Swalalert("Gửi mail lỗi !","error")	
+				};
+			 });
+		} else  {
+			$mess.text( "email không đúng định dạng !");
+		    $mess.css("color", "red");
+		}
+		
+		
+		
+	});
+	$(".btnCheckOtp").click(function(e){	
+		e.preventDefault(); 
+		const $mess = $("#result2");
+		var email=$("#emailAddress").val();
+		var code=$("#verifyCode").val();
+	    $.post("/checkCodeResetPass2", {
+	    	email : email,
+	    	code : code
+	    }, function(data) {
+
+	    	if (data=="expires") {
+				$mess.text( "Mã đã hết hạn !");
+			    $mess.css("color", "red");
+			}else
+	    	if (data=="true") {
+				Swalalert("Xác thực thành công","success");
+				$('#smartwizard').smartWizard("next");
+			}else{
+				$mess.text( " Mã bạn vừa nhập sai !");
+			    $mess.css("color", "red");
+			};
+	    });
+	});
+	
+	
+	$(".btnChangePass").click(function(e){	
+		e.preventDefault(); 
+		$.post("/changePass2", {
+	    	email : $("#emailAddress").val(),
+	    	pass : $("#newPass").val()
+	    }, function(data) {
+
+	    	if (data=="true"){
+	    		Swalalert("Đổi mật khẩu thành công","success");		
+	   		 	$('#exampleModal').modal('hide');
+			}else{
+				Swalalert("Đổi mật khẩu không thành công!","error")	
+			};
+	    });  
+	});
+
+
+	
 });
 
 
-	function emailCheck(email) {
-	  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	  return re.test(email);
-	}
+
+
+
+	
 		
 	/* function phoneCheck(str) {
 		  return /^(84|0[3|5|7|8|9])+([0-9]{8})$/.test(str);
@@ -193,114 +315,19 @@ $("a.btnForget").bind('click', function (e) {
 	
 	$("#emailAddress").on("input", validate); */
 
- $('.btnSendMail').click(function (e) { 
-	 e.preventDefault(); 
-	 
-	 const $result = $("#result");
-	  const email = $("#emailAddress").val();
-	  
-	if (emailCheck(email)) {
-		$.get('/sendMailResetPass/'+email, function(result){  
-			if (result=="true") {
-				Swalalert("Đã gửi mail. Vui lòng kiểm tra email của bạn!","success");
-				$result.text("");
-			}else
-			{
-				Swalalert("Gửi mail lỗi !","error")
-				
-			};
-		 });
-	} else  {
-		$result.text( " vui lòng nhập email đúng định dạng !");
-	    $result.css("color", "red");
-	}
-	 
-	 
+
+
+
+
+
+
+
+
+
 	
 	
 	
-}); 
 
-
-
-
-/* $('.btnVerifyCode').click(function (e) {
-	e.preventDefault(); 
-	var email=$("#emailAddress").val();
-	var code=$("#verifyCode").val();
-	$.get('/checkCodeResetPass/'+code+"&"+email, function(result){  
-		Swalalert(result,"success")  ;
-		console.log(result);
-		if (result=="true") {
-			$('.btnChangePass').css({ display: 'block'	});	
-			$("#changePass").prop("type", "text");
-		}	
-	});
-}); */
-
-
-$('.btnVerifyCode').click(function (e) {
-	e.preventDefault(); 
-	var email=$("#emailAddress").val();
-	var code=$("#verifyCode").val();
-    $.post("/checkCodeResetPass2", {
-    	email : email,
-    	code : code
-    }, function(data) {
-
-    	if (data=="expires") {
-			Swalalert("Mã đã hết hạn","warning");
-		}else
-    	if (data=="true") {
-			Swalalert("Xác thực thành công","success");
-			$('.btnChangePass').css({ display: 'block'	});	
-			$("#changePass").prop("type", "text");
-			$('.btnVerifyCode').css({ display: 'none'	});	
-			$("#verifyCode").prop("type", "hidden");
-			
-		}else
-		{
-			Swalalert("Sai mã code!","error")
-			
-		};
-    });
-                
-    
-});
-
-
-
-
-
-$('#formSubmit').submit(function (e) {
-	e.preventDefault(); //huy bo su kien mac dinh cua trang 
-
-	   $.ajax({
-           url: '${ProAPI}',
-           type: 'POST',
-           dataType: "text",
-           //enctype: 'multipart/form-data',
-           data: new FormData(this),
-           processData: false,
-           contentType: false,
-           success: function (data) {
-        	   if (data=="true") {
-       			Swalalert("Đổi mật khẩu thành công","success");
-       			$('.btnChangePass').css({ display: 'block'	});	
-       			$("#changePass").prop("type", "text");
-       			$('#emailModal').modal("hide");
-       			$('#emailModal').find('form')[0].reset();
-       		}else
-       		{
-       			Swalalert("Đổi mật khẩu không thành công!","error")
-       			
-       		};
-           },
-           error: function (error) {
-        		console.log(error);
-           }
-       });
-}); 
 
 </script>	
 

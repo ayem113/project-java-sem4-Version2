@@ -12,15 +12,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
 	UserEntity findOneByUsernameAndStt(String username, int activeStatus);
 	UserEntity findOneByEmail(String email);
-	
-	
+	UserEntity findOneByUsername(String name);
 	
 	@Modifying 
-	 @Transactional 
+	@Transactional 
 	@Query(nativeQuery = true, value = "UPDATE users SET codeCheckPass = :code WHERE id = :id") 
 	void updateCodeCheckPass(@Param("code")String code,@Param("id")Long id);
-	
-	
 	
 	@Query(nativeQuery = true, value = "SELECT * FROM users where codeCheckPass= :code and email= :email")
 	UserEntity checkCodeResetPass(@Param("code")String code,@Param("email")String email);

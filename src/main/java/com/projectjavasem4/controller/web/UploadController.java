@@ -17,26 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.projectjavasem4.dto.ProductDTO;
 
 @Controller
 public class UploadController{
-	
-	
-	  private static final String UPLOAD_DIRECTORY ="/images";  
-      
-	    
-	  
-	  
-	  
-	  
-	  @PostMapping("/file-upload")
-	  public ResponseEntity<String> fileUpload(@RequestBody ProductDTO pro,HttpSession session) {
+	    private static final String UPLOAD_DIRECTORY ="/images";  
+        
+	   @PostMapping("/file-upload")
+	    public ResponseEntity<String> fileUpload(@RequestBody ProductDTO pro,HttpSession session) {
 	      try {
 	    	  MultipartFile file=pro.getFileUpload(); 
 	          // upload directory - change it to your own
@@ -53,15 +44,9 @@ public class UploadController{
 	          ex.printStackTrace();
 	          return new ResponseEntity<>("Invalid file format!!", HttpStatus.BAD_REQUEST);
 	      }
-
 	      return new ResponseEntity<>("File uploaded!!", HttpStatus.OK);
 	  }
 	  
-	  
-	  
-	  
-	  
-	      
 	    @RequestMapping(value="savefile",method=RequestMethod.POST)  
 	    public String saveimage( @RequestParam("file") CommonsMultipartFile file,   HttpSession session) throws Exception{  
 	  
@@ -83,9 +68,7 @@ public class UploadController{
 	    @RequestMapping(value="savefile2",method=RequestMethod.POST)  
 	    public String saveimage2( @RequestParam("file") CommonsMultipartFile myFile,   HttpSession session) throws Exception{  
 	    	ServletContext context = session.getServletContext();  
-		    String path = context.getRealPath(UPLOAD_DIRECTORY); 
-		    
-		    
+		    String path = context.getRealPath(UPLOAD_DIRECTORY);     
 	    	try {
 				MultipartFile multipartFile = myFile;
 				String fileName = multipartFile.getOriginalFilename();
@@ -95,10 +78,6 @@ public class UploadController{
 				e.printStackTrace();
 			}
 			return "result";   
-			
-	    
 	    }  
-	    
-	
 	
 }

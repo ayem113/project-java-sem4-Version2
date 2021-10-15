@@ -3,16 +3,13 @@ package com.projectjavasem4.util;
 import java.util.Random;
 
 public class CaptchaUtil {
-	public static String generateCaptchaTextMethod1() 	 {
-		Random rdm=new Random();
-		int rl=rdm.nextInt(); // Random numbers are generated. 
-		String hash1 = Integer.toHexString(rl); // Random numbers are converted to Hexa Decimal.
-
-		return hash1;
+	public static String randomText1() 	 {
+		int number=new Random().nextInt(); 
+		return Integer.toHexString(number);	 
 	}
 
 
-	public static String generateCaptchaTextMethod2(int captchaLength) 	 {
+	public static String randomText2(int captchaLength) 	 {
 		String saltChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 		StringBuffer captchaStrBuffer = new StringBuffer();
 		java.util.Random rnd = new java.util.Random();

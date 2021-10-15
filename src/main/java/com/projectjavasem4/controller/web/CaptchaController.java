@@ -1,9 +1,15 @@
 package com.projectjavasem4.controller.web;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.projectjavasem4.entities.UserEntity;
 import com.projectjavasem4.util.CaptchaUtil;
 
 import java.awt.Color;
@@ -24,8 +30,11 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("captcha")
 public class CaptchaController {
 	public static final String FILE_TYPE = "jpeg";
-	@RequestMapping(method = RequestMethod.GET)
-	public void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+	
+	
+	@RequestMapping(value = "/getCapcha1",  method = RequestMethod.GET)
+	public void getCapcha1(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("image/jpg");
 		int iTotalChars = 6;
 		int iHeight = 40;
@@ -54,34 +63,26 @@ public class CaptchaController {
 		HttpSession session = request.getSession();
 		session.setAttribute("captcha_security", sImageCode);
 	}
-	@RequestMapping( value = "/a",   method = RequestMethod.GET)
-	public void index2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String captchaStr="";
-		captchaStr = CaptchaUtil.generateCaptchaTextMethod2(6);
-
-
+	
+	
+	
+	@RequestMapping(value = "/getCapcha2",   method = RequestMethod.GET)
+	public void getCapcha2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String captchaStr= CaptchaUtil.randomText1();
 		try {
 			int width=100;     	
 			int height=40;
 
-			Color bg = new Color(0,255,255);
-			Color fg = new Color(0,100,0);
-
-			Font font = new Font("Arial", Font.BOLD, 20);
 			BufferedImage cpimg =new BufferedImage(width,height,BufferedImage.OPAQUE);
 			Graphics g = cpimg.createGraphics();
-
-			g.setFont(font);
-			g.setColor(bg);
+			g.setFont(new Font("Arial", Font.BOLD, 20));
+			g.setColor(new Color(0,255,255));
 			g.fillRect(0, 0, width, height);
-			g.setColor(fg);
+			g.setColor(new Color(0,100,0));
 			g.drawString(captchaStr,10,25);   
 
-			HttpSession session = request.getSession(true);
-			session.setAttribute("CAPTCHA", captchaStr);
-
+			request.getSession(true).setAttribute("CAPTCHA", captchaStr);
 			OutputStream outputStream = response.getOutputStream();
-
 			ImageIO.write(cpimg, FILE_TYPE, outputStream);
 			outputStream.close();
 
@@ -89,5 +90,64 @@ public class CaptchaController {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	@RequestMapping(value = "/test-capcha", method = RequestMethod.GET)
+	public ModelAndView tesstCapcha(Model model,HttpServletRequest request, HttpServletResponse response) {
+		UserEntity login= new UserEntity();
+		model.addAttribute("login", login);
+		return new ModelAndView("web/capcha");
+	}
+	
+	
+	
+	@RequestMapping(value = "/loginCapcha", method = RequestMethod.POST)
+	public ModelAndView loginCapcha(@ModelAttribute("login") UserEntity login,BindingResult result,Model model,HttpSession session) {
+		LOGGER.debug("--- In Login method ----");
+		
+		/*
+		 * if (login.getUsername() == null || login.getUsername().equals("")){
+		 * login.setCaptcha(""); mav.addObject("message", "User Id is required"); return
+		 * mav; }
+		 * 
+		 * 
+		 * if (login.getPassword() == null || login.getPassword().equals("")){
+		 * login.setCaptcha(""); mav.addObject("message", "Password is required");
+		 * return mav; }
+		 * 
+		 * if(login.getUsername().equals("test") &&
+		 * login.getPassword().equals("test123")){
+		 * System.out.println("user id and password matches"); mav.addObject("loginId",
+		 * login.getUsername()); return mav; } else{ login.setCaptcha("");
+		 * mav.addObject("message","User ID or Password Incorrect"); return mav; }
+		 */
+
+		String captcha = (String) session.getAttribute("CAPTCHA");
+		if(captcha == null || (captcha != null && !captcha.equals(login.getCaptcha()))){
+			/*
+			 * login.setCaptcha(""); mav.addObject("message", "Captcha does not match");
+			 * return mav;
+			 */
+			
+			
+			ModelAndView mm= new ModelAndView("web/capcha");
+			mm.addObject("error","Captcha false");
+			//return "account/index";
+			return mm;
+			
+		}else {
+			
+			
+			ModelAndView mm= new ModelAndView("web/capcha");
+			mm.addObject("error","Captcha ok");
+			//return "account/index";
+			return mm;
+		}
+		
+		
+		
+	}
+	
 
 }

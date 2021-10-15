@@ -14,7 +14,7 @@
 		<springsecurity.version>3.2.8.RELEASE</springsecurity.version>
 		<jsp.api.version>2.3.1</jsp.api.version>
 		<jstl.version>1.2</jstl.version>
-		<hibernate.version>4.3.6.Final</hibernate.version>
+		<hibernate.version>5.4.9.Final</hibernate.version>
 		<spring.data>1.11.5.RELEASE</spring.data>
 		<mysql.version>8.0.13</mysql.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -140,6 +140,11 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.hibernate.validator</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>7.0.1.Final</version>
+		</dependency>
 
 		<!-- Spring data -->
 		<dependency>
@@ -165,6 +170,26 @@
 			<version>2.6.3</version>
 		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		
+		<dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>2.8.8</version>
+		</dependency>
+			<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-client -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-server -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>1.9</version>
+		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
@@ -238,11 +263,11 @@
             <type>pom</type>
         </dependency>    -->
         
-<dependency>
-    <groupId>com.sun.mail</groupId>
-    <artifactId>javax.mail</artifactId>
-    <version>1.6.2</version>
-</dependency>
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
 		<dependency>
 		    <groupId>javax.mail</groupId>
@@ -256,16 +281,39 @@
 		    <version>1.1.1</version>
 		</dependency>
 
+			<!-- Java Mail API -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+ 
+        <!-- Spring framework - email library -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
 
-
 	
 	
 	
+	<!-- jdbc-javax-net-ssl-sslexception-closing-inbound-before-receiving-p -->
+	<dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <scope>runtime</scope>
+        <version>8.0.20</version>
+    </dependency>
 	
 	
 	
-	
-	
+	<!-- upgrading from Java 8 to 11. -->
+	<dependency>
+    <groupId>org.javassist</groupId>
+    <artifactId>javassist</artifactId>
+    <version>3.25.0-GA</version>
+	</dependency>
 	
 	
 	

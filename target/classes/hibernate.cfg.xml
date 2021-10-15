@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+<session-factory>
+    
+    
+    
+  <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+  <property name="hibernate.connection.password">1234$</property>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/dbprojectjavasem4springmvc</property>
+  <property name="hibernate.connection.username">root</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
+  <property name="hibernate.show_sql">true</property>
+  <property name="hibernate.current_session_context_class">thread</property>
+  
+  <mapping class="com.projectjavasem4.entities.BaseEntity"/>
+  <mapping class="com.projectjavasem4.entities.ProductEntity"/>
+  <mapping class="com.projectjavasem4.entities.CategoryEntity"/>
+  <mapping class="com.projectjavasem4.entities.CommentEntity"/>
+  <mapping class="com.projectjavasem4.entities.ProductDetailEntity"/>
+  <mapping class="com.projectjavasem4.entities.UserEntity"/>
+  <mapping class="com.projectjavasem4.entities.ColorEntity"/>
+  <mapping class="com.projectjavasem4.entities.DistrictEntity"/>
+  <mapping class="com.projectjavasem4.entities.OrderDetailEntity"/>
+  <mapping class="com.projectjavasem4.entities.OrderEntity"/>
+  <mapping class="com.projectjavasem4.entities.PermissionDetailEntity"/>
+  <mapping class="com.projectjavasem4.entities.PermissionEntity"/>
+  <mapping class="com.projectjavasem4.entities.ProductImageEntity"/>
+  <mapping class="com.projectjavasem4.entities.ProvinceEntity"/>
+  <mapping class="com.projectjavasem4.entities.RoleEntity"/>
+  <mapping class="com.projectjavasem4.entities.SizeEntity"/>
+  <mapping class="com.projectjavasem4.entities.UserEntity"/>
+  <mapping class="com.projectjavasem4.entities.WardEntity"/>
+  
+  
+    
+    </session-factory>
+</hibernate-configuration>
